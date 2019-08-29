@@ -2,10 +2,10 @@ require('dotenv').config();
 
 module.exports = {
   Query: {
-    appName: () => `Hasil-Nelayan ${process.env.NODE_ENV}`,
+    appName: () => `VIS-Cleaning-Api ${process.env.NODE_ENV}`,
   },
 
   Mutation: {
-    setAppName: () => 'Hasil-Nelayan',
+    setAppName: () => 'VIS-Cleaning-Api',
   },
 };

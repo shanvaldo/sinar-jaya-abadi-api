@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey  : 'categoryId',
       targetKey   : 'id',
     });
+
+    SubCategory.hasMany(models.Product, {
+      as          : 'products',
+      foreignKey  : 'subCategoryId',
+      sourceKey   : 'id',
+    });
   };
   return SubCategory;
 };

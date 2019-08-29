@@ -5,6 +5,8 @@ type Category {
   description: String
   createdAt: String
   updatedAt: String
+
+  subCategories: [SubCategory]
 }
 
 input NewCategory {

@@ -1,0 +1,51 @@
+type ProductImage {
+  id: ID!
+  productId: ID
+  linkImage: String
+  order: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type Product {
+  id: ID!
+  name: String
+  description: String
+  subCategoryId: ID
+  sold: Int
+  seen: Int
+  isAvailable: Boolean
+  weight: Int
+  minOrder: Int
+  price: Int
+  productImages: [ProductImage]
+  subCategory: SubCategory
+  createdAt: String
+  updatedAt: String
+}
+
+input NewProductImage {
+  linkImage: String!
+  order: Int!
+}
+
+input NewProduct {
+  name: String!
+  description: String
+  subCategoryId: ID!
+  isAvailable: Boolean
+  weight: Int
+  minOrder: Int
+  price: Int!
+  productImages: [NewProductImage]
+}
+
+extend type Query {
+  products: [Product]
+  product(productId: ID!): Product
+}
+
+extend type Mutation {
+  createProduct(input: NewProduct!): Product
+  deleteProduct(productId: ID!): Product
+}
