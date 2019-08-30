@@ -8,6 +8,11 @@ const server = new ApolloServer({
 });
 
 const app = express();
+
+app.get('/health', (_, res) => {
+  res.send('health');
+});
+
 server.applyMiddleware({ app, path: '/api' });
 
 app.listen({ port: 3000 }, () =>
