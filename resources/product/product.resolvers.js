@@ -1,4 +1,5 @@
 const product = require('./product.functions');
+const verifyToken = require('../auth/auth.functions/verify.auth');
 
 module.exports = {
   Query: {
@@ -7,17 +8,24 @@ module.exports = {
   },
 
   Mutation: {
-    createProduct: (_1, args) => product.create({
-      name: args.input.name,
-      description: args.input.description,
-      subCategoryId: args.input.subCategoryId,
-      isAvailable: args.input.isAvailable,
-      weight: args.input.weight,
-      minOrder: args.input.minOrder,
-      price: args.input.price,
-      productImages: args.input.productImages,
-    }),
+    createProduct: async (_1, args, { accessToken }) => {
+      await verifyToken(accessToken);
 
-    deleteProduct: (_1, args) => product.delete(args.productId),
+      return product.create({
+        name: args.input.name,
+        description: args.input.description,
+        subCategoryId: args.input.subCategoryId,
+        isAvailable: args.input.isAvailable,
+        minOrder: args.input.minOrder,
+        price: args.input.price,
+        productImages: args.input.productImages,
+      });
+    },
+
+    deleteProduct: async (_1, args, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return product.delete(args.productId);
+    },
   },
 };

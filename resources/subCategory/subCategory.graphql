@@ -9,13 +9,24 @@ type SubCategory {
   updatedAt: String
 }
 
+input NewSubCategory {
+  name: String!
+  label: String
+  description: String
+}
+
+input UpdateSubCategory {
+  label: String
+  description: String
+}
+
 extend type Query {
   subCategories: [SubCategory]
   subCategory(subCategoryId: ID!): SubCategory
 }
 
 extend type Mutation {
-  createSubCategory(categoryId: ID!, input: NewCategory!): SubCategory
-  updateSubCategory(subCategoryId: ID!, input: UpdateCategory!): SubCategory
+  createSubCategory(categoryId: ID!, input: NewSubCategory!): SubCategory
+  updateSubCategory(subCategoryId: ID!, input: UpdateSubCategory!): SubCategory
   deleteSubCategory(subCategoryId: ID!): SubCategory
 }

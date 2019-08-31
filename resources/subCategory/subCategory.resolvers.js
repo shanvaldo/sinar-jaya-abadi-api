@@ -1,4 +1,5 @@
 const subCategory = require('./subCategory.functions');
+const verifyToken = require('../auth/auth.functions/verify.auth');
 
 module.exports = {
   Query: {
@@ -7,18 +8,30 @@ module.exports = {
   },
 
   Mutation: {
-    createSubCategory: (_1, { categoryId, input: { name, label = null, description = '' } }) => subCategory.create({
-      categoryId,
-      name: name.toUpperCase(),
-      label: label || name,
-      description,
-    }),
+    createSubCategory: async (_1, { categoryId, input: { name, label = null, description = '' } }, { accessToken }) => {
+      await verifyToken(accessToken);
 
-    updateSubCategory: (_1, { subCategoryId, input: { label, description } }) => subCategory.update(subCategoryId, {
-      label,
-      description,
-    }),
+      return subCategory.create({
+        categoryId,
+        name: name.toUpperCase(),
+        label: label || name,
+        description,
+      });
+    },
 
-    deleteSubCategory: (_1, { subCategoryId }) => subCategory.delete(subCategoryId),
+    updateSubCategory: async (_1, { subCategoryId, input: { label, description } }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return subCategory.update(subCategoryId, {
+        label,
+        description,
+      });
+    },
+
+    deleteSubCategory: async (_1, { subCategoryId }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return subCategory.delete(subCategoryId);
+    },
   },
 };

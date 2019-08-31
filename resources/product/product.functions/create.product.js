@@ -5,7 +5,6 @@ module.exports = ({
     description,
     subCategoryId,
     isAvailable,
-    weight,
     minOrder,
     price,
     productImages,
@@ -16,7 +15,6 @@ module.exports = ({
       description,
       subCategoryId,
       isAvailable,
-      weight,
       minOrder,
       price,
     });
