@@ -35,5 +35,5 @@ app
 server.applyMiddleware({ app, path: graphqlPath });
 
 app.listen({ port }, () =>
-  console.log(`🚀 Server ready at http://localhost:3000${server.graphqlPath}`)
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
 );

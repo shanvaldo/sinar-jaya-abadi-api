@@ -17,7 +17,7 @@ module.exports = {
 
   Mutation: {
     createUser: async (_1, { username, password }, { accessToken }) => {
-      await verifyToken(accessToken);
+      // await verifyToken(accessToken);
 
       return user.create({ username, password });
     },
