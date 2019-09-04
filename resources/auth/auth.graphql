@@ -1,0 +1,10 @@
+type Authentication {
+  status: Boolean,
+  accessToken: String,
+  refreshToken: String,
+}
+
+extend type Mutation {
+  login(username: String!, password: String!): Authentication
+  refreshToken(username: String!, refreshToken: String!): Authentication
+}

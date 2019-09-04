@@ -1,18 +1,31 @@
 const customer = require('./customer.functions');
+const verifyToken = require('../auth/auth.functions/verify.auth');
 
 module.exports = {
   Query: {
-    customers: () => customer.findAll(),
-    customer: (_1, args) => customer.findById(args.customerId),
+    customers: async (_1, _2, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return customer.findAll();
+    },
+    customer: async (_1, { customerId }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return customer.findById(customerId);
+    },
   },
 
   Mutation: {
-    createCustomer: (_1, args) => customer.create({
-      email: args.input.email,
-      phone: args.input.phone,
-      address: args.input.address,
+    createCustomer: (_1, { input: { email, phone, address } }) => customer.create({
+      email,
+      phone,
+      address,
     }),
 
-    deleteCustomer: (_1, args) => customer.delete(args.customerId),
+    deleteCustomer: async (_1, { customerId }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return customer.delete(customerId);
+    },
   },
 };

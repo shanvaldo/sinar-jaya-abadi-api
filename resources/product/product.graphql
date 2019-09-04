@@ -15,7 +15,6 @@ type Product {
   sold: Int
   seen: Int
   isAvailable: Boolean
-  weight: Int
   minOrder: Int
   price: Int
   productImages: [ProductImage]
@@ -34,7 +33,6 @@ input NewProduct {
   description: String
   subCategoryId: ID!
   isAvailable: Boolean
-  weight: Int
   minOrder: Int
   price: Int!
   productImages: [NewProductImage]
