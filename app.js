@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+const cors = require('cors');
+const morgan = require('morgan');
 
 const schema = require('./schema');
 const constants = require('./constants');
@@ -19,6 +21,10 @@ const env = process.env.NODE_ENV || 'dev';
 const api_key = process.env.API_KEY;
 const port = process.env.PORT || 3000;
 const graphqlPath = '/graphql';
+
+app.use(cors());
+app.use(helmet());
+app.use(morgan());
 
 app
   .get('/', (_, res) => res.send('vis-cleaning-api'))
