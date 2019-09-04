@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const cors = require('cors');
+const helmet = require('helmet');
 const morgan = require('morgan');
 
 const schema = require('./schema');
