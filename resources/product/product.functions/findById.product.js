@@ -5,13 +5,11 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
     const product = await models.Product.findOne({
       include: [
         {
-          as      : 'subCategory',
-          include : [
-            {
-              as    : 'category',
-              model : models.Category,
-            }
-          ],
+          as    : 'category',
+          model : models.Category,
+        },
+        {
+          as    : 'subCategory',
           model : models.SubCategory,
         },
         {

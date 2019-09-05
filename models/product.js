@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     subCategoryId: DataTypes.UUID,
+    categoryId: DataTypes.UUID,
     sold: DataTypes.INTEGER,
     seen: DataTypes.INTEGER,
     isAvailable: DataTypes.BOOLEAN,
@@ -15,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsTo(models.SubCategory, {
       as          : 'subCategory',
       foreignKey  : 'subCategoryId',
+      targetKey   : 'id',
+    });
+
+    Product.belongsTo(models.Category, {
+      as          : 'category',
+      foreignKey  : 'categoryId',
       targetKey   : 'id',
     });
 
