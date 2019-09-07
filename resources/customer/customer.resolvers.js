@@ -16,8 +16,9 @@ module.exports = {
   },
 
   Mutation: {
-    createCustomer: (_1, { input: { email, phone, address } }) => customer.create({
+    createCustomer: (_1, { input: { email, fullName, phone, address } }) => customer.create({
       email,
+      fullName,
       phone,
       address,
     }),

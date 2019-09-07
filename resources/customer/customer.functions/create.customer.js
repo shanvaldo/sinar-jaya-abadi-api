@@ -1,10 +1,11 @@
 const models = require('../../../models');
 
-module.exports = ({ email, phone, address }) => new Promise(async (resolve, reject) => {
+module.exports = ({ email, fullName, phone, address }) => new Promise(async (resolve, reject) => {
   try {
     const [customer] = await models.Customer.findOrCreate({
       defaults: {
         email,
+        fullName,
         phone,
         address,
       },
