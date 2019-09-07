@@ -1,6 +1,7 @@
 type Customer {
   id: ID!
   email: String
+  fullName: String
   phone: String
   address: String
   createdAt: String
@@ -9,6 +10,7 @@ type Customer {
 
 input NewCustomer {
   email: String
+  fullName: String!
   phone: String
   address: String
 }
