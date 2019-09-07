@@ -16,7 +16,7 @@ module.exports = ({ customerId, totalPrice, orderDetails }) => new Promise(async
 
     try {
       await Promise.all(orderDetails.map((detail) => models.OrderDetail.create({
-        orderId: detail.orderId,
+        orderId: order.id,
         productId: detail.productId,
         quantity: detail.quantity,
         totalPrice: detail.totalPrice,
