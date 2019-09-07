@@ -2,7 +2,7 @@ const models = require('../../../models');
 
 module.exports = ({ title, content, coverImage }) => new Promise(async (resolve, reject) => {
   try {
-    const news = await models.News.findOrCreate({
+    const news = await models.News.create({
       title,
       content,
       coverImage
