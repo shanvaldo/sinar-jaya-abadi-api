@@ -14,16 +14,18 @@ module.exports = ({
     productImages,
   }) => new Promise(async (resolve, reject) => {
   try {
-    const isSubCategoryValid = await models.SubCategory.findOne({
-      where: { id: subCategoryId },
-    });
+    if (!!subCategoryId) {
+      const isSubCategoryValid = await models.SubCategory.findOne({
+        where: { id: subCategoryId },
+      });
 
-    if (!isSubCategoryValid) {
-      return reject(error.subCategory.notExists);
-    }
+      if (!isSubCategoryValid) {
+        return reject(error.subCategory.notExists);
+      }
 
-    if (isSubCategoryValid.categoryId !== categoryId) {
-      return reject(error.subCategory.notAssociate);
+      if (isSubCategoryValid.categoryId !== categoryId) {
+        return reject(error.subCategory.notAssociate);
+      }
     }
 
     const product = await models.Product.create({
