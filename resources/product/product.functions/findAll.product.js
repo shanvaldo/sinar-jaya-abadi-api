@@ -5,13 +5,11 @@ module.exports = () => new Promise(async (resolve, reject) => {
     const products = await models.Product.findAll({
       include: [
         {
-          as      : 'subCategory',
-          include : [
-            {
-              as    : 'category',
-              model : models.Category,
-            }
-          ],
+          as    : 'category',
+          model : models.Category,
+        },
+        {
+          as    : 'subCategory',
           model : models.SubCategory,
         },
         {

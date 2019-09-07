@@ -2,27 +2,27 @@ const models = require('../../../models');
 
 module.exports = (id) => new Promise(async (resolve, reject) => {
   try {
-    const category = await models.Category.findOne({
+    const order = await models.Order.findOne({
       include: [
         {
-          as      : 'subCategories',
-          model   : models.SubCategory,
+          as      : 'customer',
+          model   : models.Customer,
+        },
+        {
+          as      : 'orderDetails',
+          model   : models.OrderDetail,
           include : [
             {
-              as    : 'products',
+              as    : 'product',
               model : models.Product,
             }
           ],
-        },
-        {
-          as    : 'products',
-          model : models.Product,
         }
       ],
       where: { id },
     });
 
-    return resolve(category);
+    return resolve(order);
   } catch (error) {
     return reject(error);
   }

@@ -14,6 +14,7 @@ module.exports = {
       return product.create({
         name: args.input.name,
         description: args.input.description,
+        categoryId: args.input.categoryId,
         subCategoryId: args.input.subCategoryId,
         isAvailable: args.input.isAvailable,
         minOrder: args.input.minOrder,

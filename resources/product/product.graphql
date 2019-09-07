@@ -12,6 +12,7 @@ type Product {
   name: String
   description: String
   subCategoryId: ID
+  categoryId: ID
   sold: Int
   seen: Int
   isAvailable: Boolean
@@ -19,6 +20,7 @@ type Product {
   price: Int
   productImages: [ProductImage]
   subCategory: SubCategory
+  category: Category
   createdAt: String
   updatedAt: String
 }
@@ -31,7 +33,8 @@ input NewProductImage {
 input NewProduct {
   name: String!
   description: String
-  subCategoryId: ID!
+  categoryId: ID!
+  subCategoryId: ID
   isAvailable: Boolean
   minOrder: Int
   price: Int!

@@ -7,6 +7,7 @@ type Category {
   updatedAt: String
 
   subCategories: [SubCategory]
+  products: [Product]
 }
 
 input NewCategory {
