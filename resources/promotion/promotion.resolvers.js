@@ -7,6 +7,12 @@ module.exports = {
   },
 
   Mutation: {
+    synchronizePromotion: async (_1, { inputSynchronizePromotion }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return promotion.synch(inputSynchronizePromotion);
+    },
+
     createPromotion: async (_1, { inputCreatePromotion: { productId, order } }, { accessToken }) => {
       await verifyToken(accessToken);
 

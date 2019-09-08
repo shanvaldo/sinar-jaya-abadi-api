@@ -23,6 +23,21 @@ module.exports = {
       });
     },
 
+    updateProduct: async (_1, { productId, inputUpdateProduct }, { accessToken }) => {
+      await verifyToken(accessToken);
+
+      return product.update(productId, {
+        name: inputUpdateProduct.name,
+        description: inputUpdateProduct.description,
+        categoryId: inputUpdateProduct.categoryId,
+        subCategoryId: inputUpdateProduct.subCategoryId,
+        isAvailable: inputUpdateProduct.isAvailable,
+        minOrder: inputUpdateProduct.minOrder,
+        price: inputUpdateProduct.price,
+        productImages: inputUpdateProduct.productImages || [],
+      });
+    },
+
     deleteProduct: async (_1, args, { accessToken }) => {
       await verifyToken(accessToken);
 
