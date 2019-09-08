@@ -17,6 +17,9 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
           model : models.ProductDetail,
         }
       ],
+      order: [
+        ['productImages', 'order', 'ASC'],
+      ],
       where: { id },
     });
 
