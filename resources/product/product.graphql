@@ -25,7 +25,7 @@ type Product {
   updatedAt: String
 }
 
-input NewProductImage {
+input InputProductImage {
   linkImage: String!
   order: Int!
 }
@@ -38,7 +38,18 @@ input NewProduct {
   isAvailable: Boolean
   minOrder: Int
   price: Int!
-  productImages: [NewProductImage]
+  productImages: [InputProductImage]
+}
+
+input InputUpdateProduct {
+  name: String
+  description: String
+  categoryId: ID
+  subCategoryId: ID
+  isAvailable: Boolean
+  minOrder: Int
+  price: Int
+  productImages: [InputProductImage]
 }
 
 extend type Query {
@@ -48,5 +59,6 @@ extend type Query {
 
 extend type Mutation {
   createProduct(input: NewProduct!): Product
+  updateProduct(productId: ID!, inputUpdateProduct: InputUpdateProduct!): Product
   deleteProduct(productId: ID!): Product
 }

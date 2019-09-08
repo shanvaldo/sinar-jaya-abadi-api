@@ -6,6 +6,11 @@ type Promotion {
   updatedAt: String
 }
 
+input InputSynchronizePromotion {
+  productId: ID!
+  order: Int!
+}
+
 input InputCreatePromotion {
   productId: ID!
   order: Int!
@@ -25,6 +30,7 @@ extend type Query {
 }
 
 extend type Mutation {
+  synchronizePromotion(inputSynchronizePromotion: [InputSynchronizePromotion]!): [Promotion]
   createPromotion(inputCreatePromotion: InputCreatePromotion!): Promotion
   updatePromotion(inputUpdatePromotion: InputUpdatePromotion!): Promotion
   deletePromotion(inputDeletePromotion: InputDeletePromotion!): Promotion

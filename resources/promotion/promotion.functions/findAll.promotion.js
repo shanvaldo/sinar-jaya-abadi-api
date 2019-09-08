@@ -9,6 +9,7 @@ module.exports = () => new Promise(async (resolve, reject) => {
           model : models.Product,
         },
       ],
+      order: ['order'],
     });
 
     const response = promotions.map(({ product }) => product);
