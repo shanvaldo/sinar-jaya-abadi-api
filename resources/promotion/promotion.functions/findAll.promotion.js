@@ -7,9 +7,18 @@ module.exports = () => new Promise(async (resolve, reject) => {
         {
           as    : 'product',
           model : models.Product,
+          include: [
+            {
+              as    : 'productImages',
+              model : models.ProductDetail,
+            },
+          ],
         },
       ],
-      order: ['order'],
+      order: [
+        ['order', 'ASC'],
+        ['product', 'productImages', 'order', 'ASC'],
+      ],
     });
 
     const response = promotions.map(({ product }) => product);
