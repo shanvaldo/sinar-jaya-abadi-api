@@ -9,6 +9,14 @@ module.exports = () => new Promise(async (resolve, reject) => {
           model : models.Product,
           include: [
             {
+              as    : 'category',
+              model : models.Category,
+            },
+            {
+              as    : 'subCategory',
+              model : models.SubCategory,
+            },
+            {
               as    : 'productImages',
               model : models.ProductDetail,
             },
