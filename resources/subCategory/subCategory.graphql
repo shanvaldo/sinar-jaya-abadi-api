@@ -5,6 +5,7 @@ type SubCategory {
   label: String
   description: String
   category: Category
+  products: [Product]
   createdAt: String
   updatedAt: String
 }
