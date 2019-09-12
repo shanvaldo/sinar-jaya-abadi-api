@@ -5,6 +5,7 @@ module.exports = {
   Query: {
     products: () => product.findAll(),
     product: (_1, args) => product.findById(args.productId),
+    recommendationProducts: (_1, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => product.recommendation(productId, categoryId, limit),
   },
 
   Mutation: {

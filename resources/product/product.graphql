@@ -52,9 +52,16 @@ input InputUpdateProduct {
   productImages: [InputProductImage]
 }
 
+input InputRecommendationProduct {
+  productId: ID!
+  categoryId: ID!
+  limit: Int
+}
+
 extend type Query {
   products: [Product]
   product(productId: ID!): Product
+  recommendationProducts(inputRecommendationProduct: InputRecommendationProduct): [Product]
 }
 
 extend type Mutation {

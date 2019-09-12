@@ -9,14 +9,29 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
           model   : models.SubCategory,
           include : [
             {
-              as    : 'products',
-              model : models.Product,
+              as      : 'products',
+              model   : models.Product,
+              include : [
+                {
+                  as    : 'productImages',
+                  model : models.ProductDetail,
+                }
+              ],
             }
           ],
         },
         {
-          as    : 'products',
-          model : models.Product,
+          as      : 'products',
+          model   : models.Product,
+          include : [
+            {
+              as    : 'productImages',
+              model : models.ProductDetail,
+            }
+          ],
+          where : {
+            subCategoryId: { [models.Sequelize.Op.eq]: null },
+          },
         }
       ],
       where: { id },
