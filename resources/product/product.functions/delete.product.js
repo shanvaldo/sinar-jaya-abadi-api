@@ -13,7 +13,7 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
 
     await Promise.all([
       models.ProductDetail.destroy({ where: { productId: id } }),
-      models.Promotions.destroy({ where: { productId: id } }),
+      models.Promotion.destroy({ where: { productId: id } }),
     ]);
     await product.destroy();
 
