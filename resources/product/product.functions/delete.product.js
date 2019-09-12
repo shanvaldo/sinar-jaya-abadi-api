@@ -11,7 +11,10 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
       return reject(error.product.notExists);
     }
 
-    await models.ProductDetail.destroy({ where: { productId: id } });
+    await Promise.all([
+      models.ProductDetail.destroy({ where: { productId: id } }),
+      models.Promotions.destroy({ where: { productId: id } }),
+    ]);
     await product.destroy();
 
     return resolve(product);
