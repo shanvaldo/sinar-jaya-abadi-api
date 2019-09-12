@@ -32,6 +32,7 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
           where : {
             subCategoryId: { [models.Sequelize.Op.eq]: null },
           },
+          required: false,
         }
       ],
       where: { id },

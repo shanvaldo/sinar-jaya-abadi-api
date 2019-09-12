@@ -9,9 +9,9 @@ module.exports = () => new Promise(async (resolve, reject) => {
           model   : models.SubCategory,
           include : [
             {
-              as    : 'products',
-              model : models.Product,
-              include: [
+              as      : 'products',
+              model   : models.Product,
+              include : [
                 {
                   as    : 'productImages',
                   model : models.ProductDetail,
@@ -21,9 +21,9 @@ module.exports = () => new Promise(async (resolve, reject) => {
           ],
         },
         {
-          as    : 'products',
-          model : models.Product,
-          include: [
+          as      : 'products',
+          model   : models.Product,
+          include : [
             {
               as    : 'productImages',
               model : models.ProductDetail,
@@ -32,6 +32,7 @@ module.exports = () => new Promise(async (resolve, reject) => {
           where : {
             subCategoryId: { [models.Sequelize.Op.eq]: null },
           },
+          required: false,
         }
       ],
     });
