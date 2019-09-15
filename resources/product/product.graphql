@@ -10,6 +10,7 @@ type ProductImage {
 type Product {
   id: ID!
   name: String
+  slug: String
   description: String
   subCategoryId: ID
   categoryId: ID
@@ -52,6 +53,11 @@ input InputUpdateProduct {
   productImages: [InputProductImage]
 }
 
+input InputProduct {
+  productId: ID
+  productSlug: String
+}
+
 input InputRecommendationProduct {
   productId: ID!
   categoryId: ID!
@@ -60,7 +66,7 @@ input InputRecommendationProduct {
 
 extend type Query {
   products: [Product]
-  product(productId: ID!): Product
+  product(inputProduct: InputProduct!): Product
   recommendationProducts(inputRecommendationProduct: InputRecommendationProduct): [Product]
 }
 

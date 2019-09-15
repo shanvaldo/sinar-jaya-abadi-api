@@ -3,5 +3,6 @@ module.exports = Object.freeze({
   delete: require('./delete.category'),
   findAll: require('./findAll.category'),
   findById: require('./findById.category'),
+  findBySlug: require('./findBySlug.category'),
   update: require('./update.category'),
 });

@@ -4,7 +4,13 @@ const verifyToken = require('../auth/auth.functions/verify.auth');
 module.exports = {
   Query: {
     products: () => product.findAll(),
-    product: (_1, args) => product.findById(args.productId),
+    product: (_1, { inputProduct: { productId, productSlug } }) => {
+      if (!!productId) {
+        return product.findById(productId);
+      }
+
+      return product.findBySlug(productSlug);
+    },
     recommendationProducts: (_1, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => product.recommendation(productId, categoryId, limit),
   },
 

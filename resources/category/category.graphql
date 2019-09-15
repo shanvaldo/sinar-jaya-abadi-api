@@ -1,6 +1,7 @@
 type Category {
   id: ID!
   name: String
+  slug: String
   label: String
   description: String
   createdAt: String
@@ -21,9 +22,14 @@ input UpdateCategory {
   description: String
 }
 
+input InputCategory {
+  categoryId: ID
+  categorySlug: String
+}
+
 extend type Query {
   categories: [Category]
-  category(categoryId: ID!): Category
+  category(inputCategory: InputCategory!): Category
 }
 
 extend type Mutation {
