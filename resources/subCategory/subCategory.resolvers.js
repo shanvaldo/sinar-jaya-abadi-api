@@ -4,7 +4,13 @@ const verifyToken = require('../auth/auth.functions/verify.auth');
 module.exports = {
   Query: {
     subCategories: () => subCategory.findAll(),
-    subCategory: (_1, { subCategoryId }) => subCategory.findById(subCategoryId),
+    subCategory: (_1, { inputSubCategory: { subCategoryId, subCategorySlug } }) => {
+      if (!!subCategoryId) {
+        return subCategory.findById(subCategoryId);
+      }
+
+      return subCategory.findBySlug(subCategorySlug);
+    },
   },
 
   Mutation: {

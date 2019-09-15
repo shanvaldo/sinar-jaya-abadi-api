@@ -4,7 +4,13 @@ const verifyToken = require('../auth/auth.functions/verify.auth');
 module.exports = {
   Query: {
     categories: () => category.findAll(),
-    category: async (_1, { categoryId }) => category.findById(categoryId),
+    category: (_1, { inputCategory: { categoryId, categorySlug } }) => {
+      if (!!categoryId) {
+        return category.findById(categoryId);
+      }
+
+      return category.findBySlug(categorySlug);
+    },
   },
 
   Mutation: {

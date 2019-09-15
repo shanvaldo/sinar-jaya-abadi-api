@@ -1,6 +1,6 @@
 const models = require('../../../models');
 
-module.exports = (id) => new Promise(async (resolve, reject) => {
+module.exports = (slug) => new Promise(async (resolve, reject) => {
   try {
     const subCategory = await models.SubCategory.findOne({
       include: [
@@ -19,7 +19,7 @@ module.exports = (id) => new Promise(async (resolve, reject) => {
           ],
         }
       ],
-      where: { id },
+      where: { slug },
     });
 
     return resolve(subCategory);

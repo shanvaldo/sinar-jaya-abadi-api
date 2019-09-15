@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     weight: DataTypes.INTEGER,
     minOrder: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
-  }, {});
+  }, { paranoid: true });
   Product.associate = function(models) {
     Product.belongsTo(models.SubCategory, {
       as          : 'subCategory',

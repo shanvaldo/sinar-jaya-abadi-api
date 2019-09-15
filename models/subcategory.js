@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     label: DataTypes.STRING,
     description: DataTypes.TEXT,
-  }, {});
+  }, { paranoid: true });
   SubCategory.associate = function(models) {
     SubCategory.belongsTo(models.Category, {
       as          : 'category',

@@ -1,5 +1,6 @@
 const constants = require('../../../constants');
 const models = require('../../../models');
+const slugBuilder = require('../../../utils/slugBuilder');
 
 const { response: { error } } = constants;
 
@@ -30,6 +31,7 @@ module.exports = ({
 
     const product = await models.Product.create({
       name,
+      slug: slugBuilder(name),
       description,
       categoryId,
       subCategoryId,

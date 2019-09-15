@@ -2,6 +2,7 @@ type SubCategory {
   id: ID!
   categoryId: ID
   name: String
+  slug: String
   label: String
   description: String
   category: Category
@@ -21,9 +22,14 @@ input UpdateSubCategory {
   description: String
 }
 
+input InputSubCategory {
+  subCategoryId: ID
+  subCategorySlug: String
+}
+
 extend type Query {
   subCategories: [SubCategory]
-  subCategory(subCategoryId: ID!): SubCategory
+  subCategory(inputSubCategory: InputSubCategory!): SubCategory
 }
 
 extend type Mutation {
