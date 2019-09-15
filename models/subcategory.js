@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const SubCategory = sequelize.define('SubCategory', {
     categoryId: DataTypes.UUID,
     name: DataTypes.STRING,
+    slug: DataTypes.STRING,
     label: DataTypes.STRING,
     description: DataTypes.TEXT,
   }, { paranoid: true });
