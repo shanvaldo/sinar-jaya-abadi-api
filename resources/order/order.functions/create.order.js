@@ -4,6 +4,8 @@ const models = require('../../../models');
 const { response: { error } } = constants;
 
 module.exports = ({ customerId, totalPrice, orderDetails }) => new Promise(async (resolve, reject) => {
+  const transaction = await models.sequelize.transaction().catch((error) => reject(error));
+
   try {
     if (!orderDetails.length) {
       return reject(error.orderDetail.notExists);
@@ -14,22 +16,21 @@ module.exports = ({ customerId, totalPrice, orderDetails }) => new Promise(async
       totalPrice,
     });
 
-    try {
-      await Promise.all(orderDetails.map((detail) => models.OrderDetail.create({
-        orderId: order.id,
-        productId: detail.productId,
-        quantity: detail.quantity,
-        totalPrice: detail.totalPrice,
-        note: detail.note,
-      })));
-    } catch (error) {
-      await Promise([
-        models.OrderDetail.destroy({ where: { orderId: order.id } }),
-        models.Order.destroy({ where: { id: order.id } }),
-      ]);
+    await Promise.all(orderDetails.map((detail) => models.OrderDetail.create({
+      orderId: order.id,
+      productId: detail.productId,
+      quantity: detail.quantity,
+      totalPrice: detail.totalPrice,
+      note: detail.note,
+    }, { transaction })));
 
-      return reject(error.message || error);
-    }
+    await Promise.all(orderDetails.map((detail) => models.Product.update({
+      sold: models.Sequelize.literal(`sold + ${detail.quantity}`)
+    }, {
+      where: { id: detail.productId },
+    })));
+
+    await transaction.commit();
 
     return resolve(order);
   } catch (error) {

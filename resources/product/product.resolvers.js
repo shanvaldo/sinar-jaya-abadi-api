@@ -50,5 +50,7 @@ module.exports = {
 
       return product.delete(args.productId);
     },
+
+    incrementSeen: (_1, { inputIncrementSeen: { productId } }) => product.incrementSeen(productId),
   },
 };

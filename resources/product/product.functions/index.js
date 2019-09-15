@@ -4,6 +4,7 @@ module.exports = Object.freeze({
   findAll: require('./findAll.product'),
   findById: require('./findById.product'),
   findBySlug: require('./findBySlug.product'),
+  incrementSeen: require('./incrementSeen.product'),
   recommendation: require('./recommendation.product'),
   update: require('./update.product'),
 });

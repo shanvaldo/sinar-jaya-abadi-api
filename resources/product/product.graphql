@@ -58,6 +58,10 @@ input InputProduct {
   productSlug: String
 }
 
+input InputIncrementSeen {
+  productId: ID
+}
+
 input InputRecommendationProduct {
   productId: ID!
   categoryId: ID!
@@ -74,4 +78,5 @@ extend type Mutation {
   createProduct(input: NewProduct!): Product
   updateProduct(productId: ID!, inputUpdateProduct: InputUpdateProduct!): Product
   deleteProduct(productId: ID!): Product
+  incrementSeen(inputIncrementSeen: InputIncrementSeen!): Boolean
 }
