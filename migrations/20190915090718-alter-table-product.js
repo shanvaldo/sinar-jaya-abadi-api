@@ -34,8 +34,8 @@ module.exports = {
 
       DROP INDEX IF EXISTS ${tableName.toLowerCase()}_name;
 
-      CREATE INDEX ${tableName.toLowerCase()}_name ON "${tableName}" ("name") WHERE "${columnNameDeletedAt}" IS NULL;
-      CREATE INDEX ${tableName.toLowerCase()}_${columnNameSlug} ON "${tableName}" ("${columnNameSlug}") WHERE "${columnNameDeletedAt}" IS NULL;
+      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_name ON "${tableName}" ("name") WHERE "${columnNameDeletedAt}" IS NULL;
+      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_${columnNameSlug} ON "${tableName}" ("${columnNameSlug}") WHERE "${columnNameDeletedAt}" IS NULL;
     `, {
       type: Sequelize.QueryTypes.RAW,
     });
