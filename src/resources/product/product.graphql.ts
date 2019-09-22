@@ -1,0 +1,85 @@
+export default `
+type ProductImage {
+  id: ID!
+  productId: ID
+  linkImage: String
+  order: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type Product {
+  id: ID!
+  name: String
+  slug: String
+  description: String
+  subCategoryId: ID
+  categoryId: ID
+  sold: Int
+  seen: Int
+  isAvailable: Boolean
+  minOrder: Int
+  price: Int
+  createdAt: String
+  updatedAt: String
+
+  category: Category
+  productImages: [ProductImage]
+  subCategory: SubCategory
+}
+
+input InputProductImage {
+  linkImage: String!
+  order: Int!
+}
+
+input NewProduct {
+  name: String!
+  description: String
+  categoryId: ID!
+  subCategoryId: ID
+  isAvailable: Boolean
+  minOrder: Int
+  price: Int!
+  productImages: [InputProductImage]
+}
+
+input InputUpdateProduct {
+  name: String
+  description: String
+  categoryId: ID
+  subCategoryId: ID
+  isAvailable: Boolean
+  minOrder: Int
+  price: Int
+  productImages: [InputProductImage]
+}
+
+input InputProduct {
+  productId: ID
+  productSlug: String
+}
+
+input InputIncrementSeen {
+  productId: ID
+}
+
+input InputRecommendationProduct {
+  productId: ID!
+  categoryId: ID!
+  limit: Int
+}
+
+extend type Query {
+  products: [Product]
+  product(inputProduct: InputProduct!): Product
+  recommendationProducts(inputRecommendationProduct: InputRecommendationProduct): [Product]
+}
+
+extend type Mutation {
+  createProduct(input: NewProduct!): Product
+  updateProduct(productId: ID!, inputUpdateProduct: InputUpdateProduct!): Product
+  deleteProduct(productId: ID!): Product
+  incrementSeen(inputIncrementSeen: InputIncrementSeen!): Boolean
+}
+`;
