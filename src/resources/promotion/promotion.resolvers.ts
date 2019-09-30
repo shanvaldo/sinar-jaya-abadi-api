@@ -1,34 +1,39 @@
 import verifyToken from '../auth/auth.functions/verify.auth';
-import promotion from './promotion.functions';
+import { productLoader } from '../product/product.functions';
+import promotionFunction from './promotion.functions';
 
 export default {
   Query: {
-    promotions: () => promotion.findAll(),
+    promotions: async () => {
+      const productIds = await promotionFunction.findProductIds();
+
+      return productLoader.findById.loadMany(productIds);
+    },
   },
 
   Mutation: {
     synchronizePromotion: async (_1, { inputSynchronizePromotion }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      return promotion.synch(inputSynchronizePromotion);
+      return promotionFunction.synch(inputSynchronizePromotion);
     },
 
     createPromotion: async (_1, { inputCreatePromotion: { productId, order } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      return promotion.create({ productId, order });
+      return promotionFunction.create({ productId, order });
     },
 
     updatePromotion: async (_1, { inputUpdatePromotion: { productId, order } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      return promotion.update({ productId, order });
+      return promotionFunction.update({ productId, order });
     },
 
     deletePromotion: async (_1, { inputDeletePromotion: { productId } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      return promotion.delete(productId);
+      return promotionFunction.delete(productId);
     },
   },
 };

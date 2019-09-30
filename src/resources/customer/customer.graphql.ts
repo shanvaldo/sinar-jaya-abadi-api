@@ -7,6 +7,14 @@ type Customer {
   address: String
   createdAt: String
   updatedAt: String
+
+  orders(limit: Int): [Order]
+}
+
+type CustomerConnection {
+  edges: [Customer]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 input InputCreateCustomer {
@@ -16,9 +24,13 @@ input InputCreateCustomer {
   address: String
 }
 
+input InputCustomer {
+  customerId: ID!
+}
+
 extend type Query {
-  customers: [Customer]
-  customer(customerId: ID!): Customer
+  customers(first: Int, offset: Int): CustomerConnection
+  customer(inputCustomer: InputCustomer!): Customer
 }
 
 extend type Mutation {

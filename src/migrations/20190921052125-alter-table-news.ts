@@ -14,10 +14,10 @@ export default {
     await queryInterface.addColumn(tableName, columnNameSlug, { type: sequelize.STRING });
 
     if (news.length) {
-      const query = news.reduce((q: string, product: any) => {
-        const slug = slugBuilder(product.name);
+      const query = news.reduce((q: string, newsDetail: any) => {
+        const slug = slugBuilder(newsDetail.title);
 
-        return `${q} UPDATE "${tableName}" SET "${columnNameSlug}" = $$${slug}$$ WHERE "id" = $$${product.id}$$;`;
+        return `${q} UPDATE "${tableName}" SET "${columnNameSlug}" = $$${slug}$$ WHERE "id" = $$${newsDetail.id}$$;`;
       }, '');
 
       await queryInterface.sequelize.query(query, {

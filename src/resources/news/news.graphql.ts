@@ -1,11 +1,29 @@
 export default `
 type News {
-  id: ID!
+  id: ID
   title: String
   content: String
   coverImage: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
+
+  nextNewsId: ID
+  previousNewsId: ID
+
+  nextNews: News
+  previousNews: News
+}
+
+type NewsConnection {
+  edges: [News]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input InputNews {
+  first: Int
+  offset: Int
+  sortByCreatedAt: SortBy
 }
 
 input InputNewsDetail {
@@ -30,7 +48,7 @@ input InputDeleteNews {
 }
 
 extend type Query {
-  news: [News]
+  news(inputNews: InputNews): NewsConnection
   newsDetail(inputNewsDetail: InputNewsDetail!): News
 }
 

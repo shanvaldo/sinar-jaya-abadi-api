@@ -6,8 +6,8 @@ type OrderDetail {
   quantity: Int!
   totalPrice: Int!
   note: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   product: Product
 }
@@ -15,12 +15,24 @@ type OrderDetail {
 type Order {
   id: ID!
   customerId: ID!
+  code: String
   totalPrice: Int!
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   customer: Customer
-  orderDetails: [OrderDetail]
+  orderDetails(limit: Int): [OrderDetail]
+}
+
+type OrderConnection {
+  edges: [Order]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input InputOrders {
+  first: Int
+  offset: Int
 }
 
 input InputCreateOrderDetail {
@@ -32,6 +44,7 @@ input InputCreateOrderDetail {
 
 input InputCreateOrder {
   customerId: ID!
+  code: String!
   totalPrice: Int!
   orderDetails: [InputCreateOrderDetail]!
 }
@@ -41,7 +54,7 @@ input InputOrder {
 }
 
 extend type Query {
-  orders: [Order]
+  orders(inputOrders: InputOrders): OrderConnection
   order(inputOrder: InputOrder!): Order
 }
 

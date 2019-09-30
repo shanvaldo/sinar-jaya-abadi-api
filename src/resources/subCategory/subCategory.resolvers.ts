@@ -1,6 +1,8 @@
 import subCategoryFunctions, { subCategoryLoader } from './subCategory.functions';
 
+import { IConnection } from '../../interfaces/IConnection';
 import { TSubCategoryInstance } from '../../models/subCategory';
+import pageBuilder from '../../utils/pageBuilder';
 import verifyToken from '../auth/auth.functions/verify.auth';
 import { categoryLoader } from '../category/category.functions';
 import productFunctions, { productLoader } from '../product/product.functions';
@@ -18,27 +20,35 @@ export default {
 
     category      : (subCategory: TSubCategoryInstance) => categoryLoader.findById.load(subCategory.categoryId),
     products      : async (subCategory: TSubCategoryInstance, { limit }) => {
-      const productIds = await productFunctions.findIds(limit, {
-        subCategoryId: subCategory.id,
+      const { rows } = await productFunctions.findIds({
+        filterBy: {
+          subCategoryId: subCategory.id,
+        },
+        limit,
       });
 
-      return productLoader.findById.loadMany(productIds);
+      return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
   },
 
   Query: {
-    subCategories: async () => {
-      const subCategoryIds = await subCategoryFunctions.findIds();
+    subCategories: async (_1, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
+      const { rows: messages, totalCount } = await subCategoryFunctions.findIds({ limit, offset });
 
-      return subCategoryLoader.findById.loadMany(subCategoryIds);
+      const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
+      const pageInfo = pageBuilder(limit, offset, totalCount);
+
+      const response: IConnection<TSubCategoryInstance> = {
+        edges,
+        pageInfo,
+        totalCount,
+      };
+
+      return response;
     },
 
-    subCategory: (_1, { inputSubCategory: { subCategoryId, subCategorySlug } }) => {
-      if (!!subCategoryId) {
-        return subCategoryFunctions.findById(subCategoryId);
-      }
-
-      return subCategoryFunctions.findBySlug(subCategorySlug);
+    subCategory: (_1, { inputSubCategory: { subCategoryId } }) => {
+      return subCategoryLoader.findById.load(subCategoryId);
     },
   },
 
@@ -57,6 +67,8 @@ export default {
     updateSubCategory: async (_1, { subCategoryId, input: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
+      subCategoryLoader.findById.clear(subCategoryId);
+
       return subCategoryFunctions.update(subCategoryId, {
         description,
         label,
@@ -65,6 +77,8 @@ export default {
 
     deleteSubCategory: async (_1, { subCategoryId }, { accessToken }) => {
       await verifyToken(accessToken);
+
+      subCategoryLoader.findById.clear(subCategoryId);
 
       return subCategoryFunctions.delete(subCategoryId);
     },

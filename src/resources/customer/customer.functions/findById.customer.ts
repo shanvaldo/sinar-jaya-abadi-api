@@ -1,11 +1,17 @@
+import { ICursorConnection } from '../../../interfaces/ICursorConnection';
 import models from '../../../models';
+import { TCustomerInstance } from '../../../models/customer';
 
-export default (id: string) => new Promise(async (resolve, reject) => {
-  try {
-    const customer = await models.Customer.findOne({ where: { id } });
+export default (ids: Array<string>): Promise<Array<TCustomerInstance>> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const customers = await models.Customer.findAll({
+        where: { id: { [models.sequelize.Op.in]: ids } },
+      });
 
-    return resolve(customer);
-  } catch (error) {
-    return reject(error);
-  }
-});
+      return resolve(customers);
+    } catch (error) {
+      return reject(error);
+    }
+  });
+};

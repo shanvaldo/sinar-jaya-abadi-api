@@ -5,11 +5,17 @@ type Category {
   slug: String
   label: String
   description: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   subCategories(limit: Int): [SubCategory]
   products(limit: Int): [Product]
+}
+
+type CategoryConnection {
+  edges: [Category]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 input InputCreateCategory {
@@ -24,12 +30,12 @@ input InputUpdateCategory {
 }
 
 input InputCategory {
-  categoryId: ID
-  categorySlug: String
+  categoryId: ID!
+  categorySlug: String!
 }
 
 extend type Query {
-  categories: [Category]
+  categories(first: Int, offset: Int): CategoryConnection
   category(inputCategory: InputCategory!): Category
 }
 

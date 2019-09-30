@@ -4,8 +4,8 @@ type ProductImage {
   productId: ID
   linkImage: String
   order: Int
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 }
 
 type Product {
@@ -20,12 +20,30 @@ type Product {
   isAvailable: Boolean
   minOrder: Int
   price: Int
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   category: Category
   productImages: [ProductImage]
   subCategory: SubCategory
+}
+
+type ProductConnection {
+  edges: [Product]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input InputProductSort {
+  name: SortBy
+  seen: SortBy
+  createdAt: SortBy
+}
+
+input InputProducts {
+  first: Int
+  offset: Int
+  sort: InputProductSort
 }
 
 input InputProductImage {
@@ -33,7 +51,7 @@ input InputProductImage {
   order: Int!
 }
 
-input NewProduct {
+input InputCreateProduct {
   name: String!
   description: String
   categoryId: ID!
@@ -56,12 +74,12 @@ input InputUpdateProduct {
 }
 
 input InputProduct {
-  productId: ID
+  productId: ID!
   productSlug: String
 }
 
-input InputIncrementSeen {
-  productId: ID
+input InputSearchProduct {
+  name: String!
 }
 
 input InputRecommendationProduct {
@@ -71,15 +89,16 @@ input InputRecommendationProduct {
 }
 
 extend type Query {
-  products: [Product]
+  products(inputProducts: InputProducts): ProductConnection
   product(inputProduct: InputProduct!): Product
+  searchProducts(inputSearchProduct: InputSearchProduct!): [Product]
   recommendationProducts(inputRecommendationProduct: InputRecommendationProduct): [Product]
 }
 
 extend type Mutation {
-  createProduct(input: NewProduct!): Product
+  createProduct(inputCreateProduct: InputCreateProduct!): Product
   updateProduct(productId: ID!, inputUpdateProduct: InputUpdateProduct!): Product
   deleteProduct(productId: ID!): Product
-  incrementSeen(inputIncrementSeen: InputIncrementSeen!): Boolean
+  incrementSeen(productId: ID!): Boolean
 }
 `;

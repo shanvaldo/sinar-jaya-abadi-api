@@ -8,4 +8,18 @@ type Mutation {
 }
 
 scalar Date
+
+type PageInfo {
+  currentPage: Int
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  totalPage: Int
+}
+
+enum SortBy {
+  # Sort Ascending
+  ASC
+  # Sort Descending
+  DESC
+}
 `;

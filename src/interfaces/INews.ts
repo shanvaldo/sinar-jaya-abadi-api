@@ -3,6 +3,9 @@ export interface INewsAttributes {
   createdAt?: Date;
   updatedAt?: Date;
 
+  nextNewsId?: string;
+  previousNewsId?: string;
+
   title: string;
   slug: string;
   content?: string;

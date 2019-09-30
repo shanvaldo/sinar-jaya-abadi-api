@@ -1,12 +1,13 @@
 import models from '../../../models';
+import { TSubCategoryInstance } from '../../../models/subCategory';
 
-export default (slug: string) => new Promise(async (resolve, reject) => {
+export default (slugs: Array<string>): Promise<Array<TSubCategoryInstance>> => new Promise(async (resolve, reject) => {
   try {
-    const subCategory = await models.SubCategory.findOne({
-      where: { slug },
+    const subCategories = await models.SubCategory.findAll({
+      where: { slug: { [models.sequelize.Op.in]: slugs } },
     });
 
-    return resolve(subCategory);
+    return resolve(subCategories);
   } catch (error) {
     return reject(error);
   }

@@ -1,6 +1,7 @@
 import models from '../../../models';
+import { TProductInstance } from '../../../models/product';
 
-export default (slugs: Array<string>) => new Promise(async (resolve, reject) => {
+export default (slugs: Array<string>): Promise<Array<TProductInstance>> => new Promise(async (resolve, reject) => {
   try {
     const product = await models.Product.findAll({
       include: [

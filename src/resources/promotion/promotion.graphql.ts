@@ -3,8 +3,8 @@ type Promotion {
   id: ID!
   productId: ID!
   order: Int!
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 }
 
 input InputSynchronizePromotion {

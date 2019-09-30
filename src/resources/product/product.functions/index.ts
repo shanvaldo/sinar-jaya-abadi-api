@@ -8,20 +8,23 @@ import findBySlugProduct from './findBySlug.product';
 import findIdsProduct from './findIds.product';
 import incrementSeenProduct from './incrementSeen.product';
 import recommendationProduct from './recommendation.product';
+import searchProduct from './search.product';
 import updateProduct from './update.product';
 
 export const productLoader = Object.freeze({
-  findById: new DataLoader(findByIdProduct),
+  findById  : new DataLoader(findByIdProduct),
+  findBySlug: new DataLoader(findBySlugProduct),
 });
 
 export default Object.freeze({
-  create: createProduct,
-  delete: deleteProduct,
-  findAll: findAllProduct,
-  findById: findByIdProduct,
-  findBySlug: findBySlugProduct,
-  findIds: findIdsProduct,
-  incrementSeen: incrementSeenProduct,
+  create        : createProduct,
+  delete        : deleteProduct,
+  findAll       : findAllProduct,
+  findById      : findByIdProduct,
+  findBySlug    : findBySlugProduct,
+  findIds       : findIdsProduct,
+  incrementSeen : incrementSeenProduct,
   recommendation: recommendationProduct,
-  update: updateProduct,
+  search        : searchProduct,
+  update        : updateProduct,
 });

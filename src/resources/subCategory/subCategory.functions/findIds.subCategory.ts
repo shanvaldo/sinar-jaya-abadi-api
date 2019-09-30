@@ -1,20 +1,38 @@
+import { IResponseFindIds } from '../../../interfaces/IResponseFindIds';
 import models from '../../../models';
+import { TSubCategoryInstance } from '../../../models/subCategory';
 
 interface IFilterSubCategory {
   categoryId?: string;
 }
 
-export default (limit?: number, filterBy?: IFilterSubCategory): Promise<Array<string>> => new Promise(async (resolve, reject) => {
+interface IArgIdSubCategory {
+  limit: number;
+  offset?: number;
+  filterBy?: IFilterSubCategory;
+}
+
+export default (args: IArgIdSubCategory): Promise<IResponseFindIds<TSubCategoryInstance>> => new Promise(async (resolve, reject) => {
   try {
+    const {
+      limit,
+      filterBy = {},
+      offset = 0,
+    } = args;
+
     const condition = Object.keys(filterBy).length ? { where: filterBy } : {};
 
-    const subCategories = await models.SubCategory.findAll({
-      ...condition,
-      attributes: ['id'],
-      limit,
-    });
+    const [rows, totalCount] = await Promise.all([
+      models.SubCategory.findAll({
+        ...condition,
+        attributes: ['id'],
+        limit,
+        offset,
+      }),
+      models.SubCategory.count(),
+    ]);
 
-    return resolve(subCategories.map((subCategory) => subCategory.id));
+    return resolve({ rows, totalCount });
   } catch (error) {
     return reject(error);
   }

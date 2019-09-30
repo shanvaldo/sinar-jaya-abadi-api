@@ -19,6 +19,17 @@ input NewSubCategory {
   description: String
 }
 
+type SubCategoryConnection {
+  edges: [SubCategory]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input InputSubCategories {
+  first: Int
+  offset: Int
+}
+
 input UpdateSubCategory {
   label: String
   description: String
@@ -30,7 +41,7 @@ input InputSubCategory {
 }
 
 extend type Query {
-  subCategories: [SubCategory]
+  subCategories(inputSubCategories: InputSubCategories): [SubCategory]
   subCategory(inputSubCategory: InputSubCategory!): SubCategory
 }
 

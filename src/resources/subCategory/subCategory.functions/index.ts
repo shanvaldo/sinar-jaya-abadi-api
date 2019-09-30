@@ -9,15 +9,16 @@ import findIdsSubCategory from './findIds.subCategory';
 import updateSubCategory from './update.subCategory';
 
 export const subCategoryLoader = Object.freeze({
-  findById: new DataLoader(findByIdSubCategory),
+  findById  : new DataLoader(findByIdSubCategory),
+  findBySlug: new DataLoader(findBySlugSubCategory),
 });
 
 export default Object.freeze({
-  create: createSubCategory,
-  delete: deleteSubCategory,
-  findAll: findAllSubCategory,
-  findById: findByIdSubCategory,
+  create    : createSubCategory,
+  delete    : deleteSubCategory,
+  findAll   : findAllSubCategory,
+  findById  : findByIdSubCategory,
   findBySlug: findBySlugSubCategory,
-  findIds: findIdsSubCategory,
-  update: updateSubCategory,
+  findIds   : findIdsSubCategory,
+  update    : updateSubCategory,
 });

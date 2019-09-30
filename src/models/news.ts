@@ -8,10 +8,10 @@ export interface INewsModel extends Sequelize.Model<TNewsInstance, INewsAttribut
 
 export default (sequelize: Sequelize.Sequelize) => {
   const attributes: SequelizeAttributes<INewsAttributes> = {
-    content   : { type: Sequelize.STRING, allowNull: true },
-    coverImage: { type: Sequelize.STRING, allowNull: false },
-    slug      : { type: Sequelize.STRING, allowNull: false },
-    title     : { type: Sequelize.STRING, allowNull: false },
+    content       : { type: Sequelize.STRING, allowNull: true },
+    coverImage    : { type: Sequelize.STRING, allowNull: false },
+    slug          : { type: Sequelize.STRING, allowNull: false },
+    title         : { type: Sequelize.STRING, allowNull: false },
   };
 
   const indexes: Array<Sequelize.DefineIndexesOptions> = [{
