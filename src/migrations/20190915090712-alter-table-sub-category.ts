@@ -32,10 +32,10 @@ export default {
     await queryInterface.sequelize.query(`
       ALTER TABLE "${tableName}" ALTER COLUMN "${columnNameSlug}" SET NOT NULL;
 
-      DROP INDEX IF EXISTS ${tableName.toLowerCase()}_name;
+      DROP INDEX IF EXISTS "${tableName}_categoryId_name";
 
-      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_name ON "${tableName}" ("name") WHERE "${columnNameDeletedAt}" IS NULL;
-      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_${columnNameSlug} ON "${tableName}" ("${columnNameSlug}") WHERE "${columnNameDeletedAt}" IS NULL;
+      CREATE UNIQUE INDEX "${tableName}_categoryId_name" ON "${tableName}" ("categoryId", "name") WHERE "${columnNameDeletedAt}" IS NULL;
+      CREATE UNIQUE INDEX "${tableName}_categoryId_${columnNameSlug}" ON "${tableName}" ("categoryId", "${columnNameSlug}") WHERE "${columnNameDeletedAt}" IS NULL;
     `, {
       type: sequelize.QueryTypes.RAW,
     });
@@ -45,10 +45,10 @@ export default {
 
   down: async (queryInterface: QueryInterface, sequelize: SequelizeStatic) => {
     await queryInterface.sequelize.query(`
-      DROP INDEX IF EXISTS ${tableName.toLowerCase()}_name;
-      DROP INDEX IF EXISTS ${tableName.toLowerCase()}_${columnNameSlug};
+      DROP INDEX IF EXISTS "${tableName}_categoryId_name";
+      DROP INDEX IF EXISTS "${tableName}_categoryId_${columnNameSlug}";
 
-      CREATE INDEX ${tableName.toLowerCase()}_name ON "${tableName}" ("name");
+      CREATE INDEX "${tableName}_categoryId_name" ON "${tableName}" ("categoryId", "name");
     `, {
       type: sequelize.QueryTypes.RAW,
     });

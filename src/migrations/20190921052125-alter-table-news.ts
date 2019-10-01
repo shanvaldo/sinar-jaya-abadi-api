@@ -28,8 +28,8 @@ export default {
     await queryInterface.sequelize.query(`
       ALTER TABLE "${tableName}" ALTER COLUMN "${columnNameSlug}" SET NOT NULL;
 
-      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_title ON "${tableName}" ("title");
-      CREATE UNIQUE INDEX ${tableName.toLowerCase()}_${columnNameSlug} ON "${tableName}" ("${columnNameSlug}");
+      CREATE UNIQUE INDEX "${tableName}_title" ON "${tableName}" ("title");
+      CREATE UNIQUE INDEX "${tableName}_${columnNameSlug}" ON "${tableName}" ("${columnNameSlug}");
     `, {
       type: sequelize.QueryTypes.RAW,
     });
@@ -39,8 +39,8 @@ export default {
 
   down: async (queryInterface: QueryInterface, sequelize: SequelizeStatic) => {
     await queryInterface.sequelize.query(`
-      DROP INDEX IF EXISTS ${tableName.toLowerCase()}_title;
-      DROP INDEX IF EXISTS ${tableName.toLowerCase()}_${columnNameSlug};
+      DROP INDEX IF EXISTS "${tableName}_title";
+      DROP INDEX IF EXISTS "${tableName}_${columnNameSlug}";
     `, {
       type: sequelize.QueryTypes.RAW,
     });
