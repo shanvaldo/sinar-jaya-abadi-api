@@ -67,7 +67,7 @@ export default {
   },
 
   Mutation: {
-    createCategory: async (_1, { input: { name, label = null, description = '' } }, { accessToken }) => {
+    createCategory: async (_1, { inputCreateCategory: { name, label = null, description = '' } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return categoryFunction.create({

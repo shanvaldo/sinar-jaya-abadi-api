@@ -53,7 +53,7 @@ export default {
   },
 
   Mutation: {
-    createSubCategory: async (_1, { categoryId, input: { name, label = null, description = '' } }, { accessToken }) => {
+    createSubCategory: async (_1, { inputCreateSubCategory: { name, categoryId, label = null, description = '' } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return subCategoryFunctions.create({
@@ -64,7 +64,7 @@ export default {
       });
     },
 
-    updateSubCategory: async (_1, { subCategoryId, input: { label, description } }, { accessToken }) => {
+    updateSubCategory: async (_1, { subCategoryId, inputUpdateSubCategory: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       subCategoryLoader.findById.clear(subCategoryId);

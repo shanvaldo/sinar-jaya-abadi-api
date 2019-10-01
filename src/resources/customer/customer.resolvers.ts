@@ -51,7 +51,7 @@ export default {
   },
 
   Mutation: {
-    createCustomer: (_1, { input: { email, fullName, phone, address } }) => customerFunctions.create({
+    createCustomer: (_1, { inputCreateCustomer: { email, fullName, phone, address } }) => customerFunctions.create({
       address,
       email,
       fullName,

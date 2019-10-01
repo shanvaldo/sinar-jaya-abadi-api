@@ -63,18 +63,18 @@ export default {
   },
 
   Mutation: {
-    createProduct: async (_1, args, { accessToken }) => {
+    createProduct: async (_1, { inputCreateProduct }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return productFunctions.create({
-        categoryId: args.input.categoryId,
-        description: args.input.description,
-        isAvailable: args.input.isAvailable,
-        minOrder: args.input.minOrder,
-        name: args.input.name,
-        price: args.input.price,
-        productImages: args.input.productImages,
-        subCategoryId: args.input.subCategoryId,
+        categoryId: inputCreateProduct.categoryId,
+        description: inputCreateProduct.description,
+        isAvailable: inputCreateProduct.isAvailable,
+        minOrder: inputCreateProduct.minOrder,
+        name: inputCreateProduct.name,
+        price: inputCreateProduct.price,
+        productImages: inputCreateProduct.productImages,
+        subCategoryId: inputCreateProduct.subCategoryId,
       });
     },
 

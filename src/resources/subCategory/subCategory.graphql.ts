@@ -13,8 +13,9 @@ type SubCategory {
   products(limit: Int): [Product]
 }
 
-input NewSubCategory {
+input InputCreateSubCategory {
   name: String!
+  categoryId: ID!
   label: String
   description: String
 }
@@ -30,7 +31,7 @@ input InputSubCategories {
   offset: Int
 }
 
-input UpdateSubCategory {
+input InputUpdateSubCategory {
   label: String
   description: String
 }
@@ -46,8 +47,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  createSubCategory(categoryId: ID!, input: NewSubCategory!): SubCategory
-  updateSubCategory(subCategoryId: ID!, input: UpdateSubCategory!): SubCategory
+  createSubCategory(inputCreateSubCategory: InputCreateSubCategory!): SubCategory
+  updateSubCategory(subCategoryId: ID!, inputUpdateSubCategory: InputUpdateSubCategory!): SubCategory
   deleteSubCategory(subCategoryId: ID!): SubCategory
 }
 `;
