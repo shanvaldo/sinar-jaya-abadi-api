@@ -77,7 +77,7 @@ export default {
       });
     },
 
-    updateCategory: async (_1, { categoryId, input: { label, description } }, { accessToken }) => {
+    updateCategory: async (_1, { categoryId, inputUpdateCategory: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       const updatedCategory = await categoryFunction.update(categoryId, {
