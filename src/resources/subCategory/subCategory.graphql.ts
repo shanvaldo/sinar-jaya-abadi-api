@@ -42,7 +42,7 @@ input InputSubCategory {
 }
 
 extend type Query {
-  subCategories(inputSubCategories: InputSubCategories): [SubCategory]
+  subCategories(inputSubCategories: InputSubCategories): SubCategoryConnection
   subCategory(inputSubCategory: InputSubCategory!): SubCategory
 }
 

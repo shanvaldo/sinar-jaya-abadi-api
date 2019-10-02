@@ -50,7 +50,7 @@ export default {
       return response;
     },
 
-    product: (_1, { inputProduct: { productId } }) => productFunctions.findById(productId),
+    product: (_1, { inputProduct: { productId } }) => productLoader.findById.load(productId),
 
     searchProducts: async (_1, { inputSearchProduct: { name = '' } }) => {
       const productIds = await productFunctions.search(name);
