@@ -41,6 +41,8 @@ export default ({ customerId, code, totalPrice, orderDetails }: IInputCreateOrde
 
     return resolve(order);
   } catch (error) {
+    await transaction.rollback();
+
     return reject(error.message || error);
   }
 });

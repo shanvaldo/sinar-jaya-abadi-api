@@ -17,12 +17,20 @@ export default {
     nextNewsId      : (news: TNewsInstance) => news.nextNewsId,
     previousNewsId  : (news: TNewsInstance) => news.previousNewsId,
 
-    nextNews        : (news: TNewsInstance) => newsLoader.findById.load(news.nextNewsId).catch(() => null),
-    // previousNews    : async (news: TNewsInstance) => {
-    //   const response = !!news.previousNewsId ? (await newsLoader.findById.load(news.previousNewsId)).node : null;
+    nextNews        : (news: TNewsInstance) => {
+      if (!news.nextNewsId) {
+        return null;
+      }
 
-    //   return response;
-    // },
+      return newsLoader.findById.load(news.nextNewsId);
+    },
+    previousNews    : (news: TNewsInstance) => {
+      if (!news.previousNewsId) {
+        return null;
+      }
+
+      return newsLoader.findById.load(news.previousNewsId);
+    },
   },
 
   Query: {
@@ -42,7 +50,7 @@ export default {
     },
 
     newsDetail: (_1, { inputNewsDetail: { newsId } }) => {
-      return newsFunctions.findById(newsId);
+      return newsLoader.findById.load(newsId);
     },
   },
 

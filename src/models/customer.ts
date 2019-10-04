@@ -12,7 +12,7 @@ export default (sequelize: Sequelize.Sequelize) => {
     address : { type: Sequelize.STRING, allowNull: true },
     email   : { type: Sequelize.STRING, allowNull: false },
     fullName: { type: Sequelize.STRING, allowNull: false },
-    phone   : { type: Sequelize.ARRAY(Sequelize.STRING), allowNull: true },
+    phone   : { type: Sequelize.STRING, allowNull: true },
   };
 
   const indexes: Array<Sequelize.DefineIndexesOptions> = [];

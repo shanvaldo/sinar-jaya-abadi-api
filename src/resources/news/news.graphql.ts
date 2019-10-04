@@ -33,7 +33,7 @@ input InputNewsDetail {
 input InputCreateNews {
   title: String!
   content: String
-  coverImage: String
+  coverImage: String!
 }
 
 input InputUpdateNews {

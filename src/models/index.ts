@@ -2,6 +2,7 @@ import Sequelize from 'sequelize';
 
 import category from './category';
 import customer from './customer';
+import info from './info';
 import news from './news';
 import order from './order';
 import orderDetail from './orderDetail';
@@ -37,6 +38,7 @@ const sequelize = new Sequelize(
 const db = {
   Category      : category(sequelize),
   Customer      : customer(sequelize),
+  Info          : info(sequelize),
   News          : news(sequelize),
   Order         : order(sequelize),
   OrderDetail   : orderDetail(sequelize),
