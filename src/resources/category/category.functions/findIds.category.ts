@@ -3,6 +3,7 @@ import models from '../../../models';
 import { TCategoryInstance } from '../../../models/category';
 
 interface IFilterCategory {
+  slug?: string;
   createdAt?: string | object;
 }
 

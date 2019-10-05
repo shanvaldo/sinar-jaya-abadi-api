@@ -6,6 +6,7 @@ import { TProductInstance } from '../../../models/product';
 
 interface IFilterProduct {
   categoryId?: string;
+  slug?: string;
   subCategoryId?: string | object;
 }
 

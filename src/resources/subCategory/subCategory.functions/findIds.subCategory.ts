@@ -4,6 +4,7 @@ import { TSubCategoryInstance } from '../../../models/subCategory';
 
 interface IFilterSubCategory {
   categoryId?: string;
+  slug?: string;
 }
 
 interface IArgIdSubCategory {

@@ -74,7 +74,7 @@ input InputUpdateProduct {
 }
 
 input InputProduct {
-  productId: ID!
+  productId: ID
   productSlug: String
 }
 

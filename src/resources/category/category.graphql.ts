@@ -30,8 +30,8 @@ input InputUpdateCategory {
 }
 
 input InputCategory {
-  categoryId: ID!
-  categorySlug: String!
+  categoryId: ID
+  categorySlug: String
 }
 
 extend type Query {

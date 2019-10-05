@@ -32,7 +32,7 @@ export default {
   },
 
   Query: {
-    subCategories: async (_1, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
+    subCategories: async (_1: any, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await subCategoryFunctions.findIds({ limit, offset });
 
       const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
@@ -47,13 +47,28 @@ export default {
       return response;
     },
 
-    subCategory: (_1, { inputSubCategory: { subCategoryId } }) => {
-      return subCategoryLoader.findById.load(subCategoryId);
+    subCategory: async (_1: any, { inputSubCategory: { subCategoryId, subCategorySlug } }) => {
+      if (!!subCategoryId) {
+        return subCategoryLoader.findById.load(subCategoryId);
+      }
+
+      const subCategory = await subCategoryFunctions.findIds({
+        filterBy: { slug: subCategorySlug },
+        limit: 1,
+        offset: 0,
+      });
+
+      if (!subCategory.totalCount) {
+        return null;
+      }
+
+      return subCategoryLoader.findById.load(subCategory.rows[0].id);
     },
   },
 
   Mutation: {
-    createSubCategory: async (_1, { inputCreateSubCategory: { name, categoryId, label = null, description = '' } }, { accessToken }) => {
+    // tslint:disable-next-line: max-line-length
+    createSubCategory: async (_1: any, { inputCreateSubCategory: { name, categoryId, label = null, description = '' } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return subCategoryFunctions.create({
@@ -64,7 +79,7 @@ export default {
       });
     },
 
-    updateSubCategory: async (_1, { subCategoryId, inputUpdateSubCategory: { label, description } }, { accessToken }) => {
+    updateSubCategory: async (_1: any, { subCategoryId, inputUpdateSubCategory: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       subCategoryLoader.findById.clear(subCategoryId);
@@ -75,7 +90,7 @@ export default {
       });
     },
 
-    deleteSubCategory: async (_1, { subCategoryId }, { accessToken }) => {
+    deleteSubCategory: async (_1: any, { subCategoryId }, { accessToken }) => {
       await verifyToken(accessToken);
 
       subCategoryLoader.findById.clear(subCategoryId);

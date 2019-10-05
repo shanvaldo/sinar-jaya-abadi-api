@@ -28,7 +28,7 @@ export default {
         limit,
       });
 
-      return productLoader.findBySlug.loadMany(rows.map((r) => r.id));
+      return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
 
     subCategories : async (category: TCategoryInstance, { limit }) => {
@@ -48,7 +48,7 @@ export default {
   },
 
   Query: {
-    categories: async (_1, { first: limit = 10, offset = 0 }) => {
+    categories: async (_1: any, { first: limit = 10, offset = 0 }) => {
       const { rows: messages, totalCount } = await categoryFunction.findIds({ limit, offset });
 
       const edges = await categoryLoader.findById.loadMany(messages.map(({ id }) => id));
@@ -63,11 +63,27 @@ export default {
       return response;
     },
 
-    category: (_1, { inputCategory: { categoryId } }) => categoryLoader.findById.load(categoryId),
+    category: async (_1: any, { inputCategory: { categorySlug, categoryId } }) => {
+      if (!!categoryId) {
+        return categoryLoader.findById.load(categoryId);
+      }
+
+      const category = await categoryFunction.findIds({
+        filterBy: { slug: categorySlug },
+        limit: 1,
+        offset: 0,
+      });
+
+      if (!category.totalCount) {
+        return null;
+      }
+
+      return categoryLoader.findById.load(category.rows[0].id);
+    },
   },
 
   Mutation: {
-    createCategory: async (_1, { inputCreateCategory: { name, label = null, description = '' } }, { accessToken }) => {
+    createCategory: async (_1: any, { inputCreateCategory: { name, label = null, description = '' } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return categoryFunction.create({
@@ -77,7 +93,7 @@ export default {
       });
     },
 
-    updateCategory: async (_1, { categoryId, inputUpdateCategory: { label, description } }, { accessToken }) => {
+    updateCategory: async (_1: any, { categoryId, inputUpdateCategory: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
       const updatedCategory = await categoryFunction.update(categoryId, {
@@ -90,7 +106,7 @@ export default {
       return updatedCategory;
     },
 
-    deleteCategory: async (_1, { categoryId }, { accessToken }) => {
+    deleteCategory: async (_1: any, { categoryId }, { accessToken }) => {
       await verifyToken(accessToken);
 
       const deletedCategory = await categoryFunction.delete(categoryId);

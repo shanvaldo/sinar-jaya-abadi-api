@@ -35,7 +35,7 @@ export default {
   },
 
   Query: {
-    products: async (_1, { inputProducts: { first: limit = 10, offset = 0, sort = {} } = {} }) => {
+    products: async (_1: any, { inputProducts: { first: limit = 10, offset = 0, sort = {} } = {} }) => {
       const { rows: messages, totalCount } = await productFunctions.findIds({ limit, offset, sortBy: sort });
 
       const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
@@ -50,20 +50,37 @@ export default {
       return response;
     },
 
-    product: (_1, { inputProduct: { productId } }) => productLoader.findById.load(productId),
+    product: async (_1: any, { inputProduct: { productId, productSlug } }) => {
+      if (!!productId) {
+        return productLoader.findById.load(productId);
+      }
 
-    searchProducts: async (_1, { inputSearchProduct: { name = '' } }) => {
+      const product = await productFunctions.findIds({
+        filterBy: { slug: productSlug },
+        limit: 1,
+        offset: 0,
+      });
+
+      if (!product.totalCount) {
+        return null;
+      }
+
+      return productLoader.findById.load(product.rows[0].id);
+    },
+
+    searchProducts: async (_1: any, { inputSearchProduct: { name = '' } }) => {
       const productIds = await productFunctions.search(name);
 
       return productLoader.findById.loadMany(productIds);
     },
 
-    // tslint:disable-next-line: max-line-length
-    recommendationProducts: (_1, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => productFunctions.recommendation({ productId, categoryId, limit }),
+    recommendationProducts: (_1: any, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => {
+      return productFunctions.recommendation({ productId, categoryId, limit });
+    },
   },
 
   Mutation: {
-    createProduct: async (_1, { inputCreateProduct }, { accessToken }) => {
+    createProduct: async (_1: any, { inputCreateProduct }, { accessToken }) => {
       await verifyToken(accessToken);
 
       return productFunctions.create({
@@ -78,7 +95,7 @@ export default {
       });
     },
 
-    updateProduct: async (_1, { productId, inputUpdateProduct }, { accessToken }) => {
+    updateProduct: async (_1: any, { productId, inputUpdateProduct }, { accessToken }) => {
       await verifyToken(accessToken);
 
       productLoader.findById.clear(productId);
@@ -95,7 +112,7 @@ export default {
       });
     },
 
-    deleteProduct: async (_1, { productId }, { accessToken }) => {
+    deleteProduct: async (_1: any, { productId }, { accessToken }) => {
       await verifyToken(accessToken);
 
       productLoader.findById.clear(productId);
@@ -103,7 +120,7 @@ export default {
       return productFunctions.delete(productId);
     },
 
-    incrementSeen: (_1, { productId }) => {
+    incrementSeen: (_1: any, { productId }) => {
       productLoader.findById.clear(productId);
 
       return productFunctions.incrementSeen(productId);
