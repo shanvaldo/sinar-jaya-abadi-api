@@ -29,18 +29,21 @@ export default {
     totalPrice  : (order: TOrderInstance) => order.totalPrice,
     updatedAt   : (order: TOrderInstance) => order.updatedAt,
 
-    // customer    : async (order: TOrderInstance) => {
-    //   return (await customerLoader.findById.load(order.customerId)).node;
-    // },
-    // orderDetails: async (order: TOrderInstance, { limit }) => {
-    //   const orderDetailIds = await orderDetailFunctions.findIds(limit, { orderId: order.id });
+    customer    : (order: TOrderInstance) => customerLoader.findById.load(order.customerId),
 
-    //   return orderDetailLoader.findById.loadMany(orderDetailIds);
-    // },
+    orderDetails: async (order: TOrderInstance, { limit }) => {
+      const orderDetailIds = await orderDetailFunctions.findIds(limit, { orderId: order.id });
+
+      if (!orderDetailIds.length) {
+        return null;
+      }
+
+      return orderDetailLoader.findById.loadMany(orderDetailIds);
+    },
   },
 
   Query: {
-    orders: async (_1, { inputOrders: { first: limit = 10, offset = 0 } = {} }) => {
+    orders: async (_1: any, { inputOrders: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await orderFunctions.findIds({ limit, offset });
 
       const edges = await orderLoader.findById.loadMany(messages.map(({ id }) => id));
@@ -55,11 +58,11 @@ export default {
       return response;
     },
 
-    order: (_1, { orderId }) => orderLoader.findById.load(orderId),
+    order: (_1: any, { inputOrder: { orderId } }) => orderLoader.findById.load(orderId),
   },
 
   Mutation: {
-    createOrder: (_1, { inputCreateOrder }) => {
+    createOrder: (_1: any, { inputCreateOrder }) => {
       const { customerId, code, totalPrice, orderDetails } = inputCreateOrder;
 
       return orderFunctions.create({ customerId, code, totalPrice, orderDetails });
