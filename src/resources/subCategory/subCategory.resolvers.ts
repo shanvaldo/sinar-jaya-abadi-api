@@ -34,7 +34,7 @@ export default {
       });
 
       if (!totalCount) {
-        return null;
+        return [];
       }
 
       return productFunctions.findById(rows.map((r) => r.id));
