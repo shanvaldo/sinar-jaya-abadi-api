@@ -1,7 +1,0 @@
-type Query {
-  appName: String!
-}
-
-type Mutation {
-  setAppName: String!
-}

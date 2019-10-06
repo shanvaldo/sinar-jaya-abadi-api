@@ -6,14 +6,19 @@
   "author": "ardhiansyahputra <ardhimetanaputra@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf ./dist",
+    "compile": "npm run lint && npm run clean && tsc",
+    "compile:watch": "node_modules/typescript/bin/tsc --watch",
+    "lint": "node_modules/.bin/tslint -c tslint.json 'lib/**/*.ts'",
     "sequelize": "node_modules/sequelize-cli/lib/sequelize",
-    "start": "node app.js",
-    "start-dev": "nodemon app.js"
+    "start": "node dist/app.js",
+    "start-dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts"
   },
   "dependencies": {
     "apollo-server-express": "^2.8.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "dataloader": "^1.4.0",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "graphql": "^14.4.2",
@@ -22,12 +27,19 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "pg": "^7.12.1",
-    "sequelize": "^5.13.0"
+    "sequelize": "^4.44.3"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/helmet": "0.0.44",
+    "@types/jsonwebtoken": "^8.3.4",
+    "@types/morgan": "^1.7.37",
+    "@types/sequelize": "^4.28.4",
+    "concurrently": "^4.1.2",
     "husky": "^3.0.1",
     "nodemon": "^1.19.1",
-    "sequelize-cli": "^5.5.0"
+    "sequelize-cli": "^5.5.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
   }
 }
