@@ -10,6 +10,7 @@ export interface IProductModel extends Sequelize.Model<TProductInstance, IProduc
 export default (sequelize: Sequelize.Sequelize) => {
   const attributes: SequelizeAttributes<IProductAttributes> = {
     categoryId    : { type: Sequelize.UUID, allowNull: false },
+    description   : { type: Sequelize.TEXT, allowNull: true },
     isAvailable   : { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
     minOrder      : { type: Sequelize.INTEGER, allowNull: false, defaultValue: 1 },
     name          : { type: Sequelize.STRING, allowNull: false },
