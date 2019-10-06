@@ -5,6 +5,7 @@ type Query {
 
 type Mutation {
   setAppName: String!
+  clearCache: Boolean
 }
 
 scalar Date
