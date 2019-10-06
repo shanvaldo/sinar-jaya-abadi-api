@@ -24,12 +24,7 @@ const sequelize = new Sequelize(
   {
     benchmark: false,
     // tslint:disable-next-line: no-console
-    logging: console.log,
-    pool: {
-      idle: 0,
-      max: 1,
-      min: 0,
-    },
+    logging: env === 'dev' ? console.log : false,
     timezone: '+07:00',
     ...dbConnection,
   },
