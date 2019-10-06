@@ -8,5 +8,6 @@ export const orderDetailLoader = Object.freeze({
 });
 
 export default Object.freeze({
+  findById: findByIdOrderDetail,
   findIds: findIdsOrderDetail,
 });
