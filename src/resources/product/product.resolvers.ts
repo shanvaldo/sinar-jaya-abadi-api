@@ -47,12 +47,13 @@ export default {
     products: async (_1: any, { inputProducts: { first: limit = 10, offset = 0, sort = {} } = {} }) => {
       const { rows: messages, totalCount } = await productFunctions.findIds({ limit, offset, sortBy: sort });
 
-      const edges = await productFunctions.findById(messages.map(({ id }) => id));
+      const edges = await Promise.all(messages.map(({ id }) => productFunctions.findById([id])));
+      // const edges = await productFunctions.findById(messages.map(({ id }) => id));
       // const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TProductInstance> = {
-        edges,
+        edges: edges.flatMap((e) => e),
         pageInfo,
         totalCount,
       };

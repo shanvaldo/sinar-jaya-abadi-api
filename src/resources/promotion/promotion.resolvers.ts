@@ -7,7 +7,11 @@ export default {
     promotions: async () => {
       const productIds = await promotionFunction.findProductIds();
 
-      return productFunctions.findById(productIds);
+      const response = await Promise.all(productIds.map((p) => productFunctions.findById([p])));
+
+      return response.flatMap((r) => r);
+
+      // return productFunctions.findById(productIds);
 
       // return productLoader.findById.loadMany(productIds);
     },

@@ -37,7 +37,9 @@ export default {
         return [];
       }
 
-      return productFunctions.findById(rows.map((r) => r.id));
+      const response = await Promise.all(rows.map((r) => productFunctions.findById([r.id])));
+
+      return response.flatMap((r) => r);
 
       // return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
@@ -47,12 +49,13 @@ export default {
     subCategories: async (_1: any, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await subCategoryFunctions.findIds({ limit, offset });
 
-      const edges = await subCategoryFunctions.findById(messages.map(({ id }) => id));
+      const edges = await Promise.all(messages.map(({ id }) => subCategoryFunctions.findById([id])));
+      // const edges = await subCategoryFunctions.findById(messages.map(({ id }) => id));
       // const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TSubCategoryInstance> = {
-        edges,
+        edges: edges.flatMap((e) => e),
         pageInfo,
         totalCount,
       };

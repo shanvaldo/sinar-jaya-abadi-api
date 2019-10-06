@@ -58,11 +58,12 @@ export default {
       // const uniqueMessage = [...new Set(messages.map(({ id }) => id))];
 
       // const edges = await categoryLoader.findById.loadMany(uniqueMessage);
-      const edges = await categoryFunction.findById(messages.map(({ id }) => id));
+      // const edges = await categoryFunction.findById(messages.map(({ id }) => id));
+      const edges = await Promise.all(messages.map(({ id }) => categoryFunction.findById([id])));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TCategoryInstance> = {
-        edges,
+        edges: edges.flatMap((e) => e),
         pageInfo,
         totalCount,
       };
