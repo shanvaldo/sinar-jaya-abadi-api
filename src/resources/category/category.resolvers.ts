@@ -28,7 +28,9 @@ export default {
         limit,
       });
 
-      return productLoader.findById.loadMany(rows.map((r) => r.id));
+      return productFunctions.findById(rows.map((r) => r.id));
+
+      // return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
 
     subCategories : async (category: TCategoryInstance, { limit }) => {
@@ -37,7 +39,9 @@ export default {
         limit,
       });
 
-      return subCategoryLoader.findById.loadMany(rows.map((r) => r.id));
+      return subCategoryFunctions.findById(rows.map((r) => r.id));
+
+      // return subCategoryLoader.findById.loadMany(rows.map((r) => r.id));
     },
   },
 
@@ -51,7 +55,10 @@ export default {
     categories: async (_1: any, { first: limit = 10, offset = 0 }) => {
       const { rows: messages, totalCount } = await categoryFunction.findIds({ limit, offset });
 
-      const edges = await categoryLoader.findById.loadMany(messages.map(({ id }) => id));
+      // const uniqueMessage = [...new Set(messages.map(({ id }) => id))];
+
+      // const edges = await categoryLoader.findById.loadMany(uniqueMessage);
+      const edges = await categoryFunction.findById(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TCategoryInstance> = {
@@ -65,7 +72,10 @@ export default {
 
     category: async (_1: any, { inputCategory: { categorySlug, categoryId } }) => {
       if (!!categoryId) {
-        return categoryLoader.findById.load(categoryId);
+        // return categoryLoader.findById.load(categoryId);
+        const [res] = await categoryFunction.findById([categoryId]);
+
+        return res;
       }
 
       const category = await categoryFunction.findIds({
@@ -78,7 +88,10 @@ export default {
         return null;
       }
 
-      return categoryLoader.findById.load(category.rows[0].id);
+      // const response = await categoryLoader.findById.load(category.rows[0].id);
+      const [response] = await categoryFunction.findById([category.rows[0].id]);
+
+      return response;
     },
   },
 

@@ -4,7 +4,7 @@ import { IConnection } from '../../interfaces/IConnection';
 import { TSubCategoryInstance } from '../../models/subCategory';
 import pageBuilder from '../../utils/pageBuilder';
 import verifyToken from '../auth/auth.functions/verify.auth';
-import { categoryLoader } from '../category/category.functions';
+import categoryFunctions, { categoryLoader } from '../category/category.functions';
 import productFunctions, { productLoader } from '../product/product.functions';
 
 export default {
@@ -18,16 +18,28 @@ export default {
     slug          : (subCategory: TSubCategoryInstance) => subCategory.slug,
     updatedAt     : (subCategory: TSubCategoryInstance) => subCategory.updatedAt,
 
-    category      : (subCategory: TSubCategoryInstance) => categoryLoader.findById.load(subCategory.categoryId),
+    category      : async (subCategory: TSubCategoryInstance) => {
+      const [response] = await categoryFunctions.findById([subCategory.categoryId]);
+
+      return response;
+
+      // return categoryLoader.findById.load(subCategory.categoryId);
+    },
     products      : async (subCategory: TSubCategoryInstance, { limit }) => {
-      const { rows } = await productFunctions.findIds({
+      const { rows, totalCount } = await productFunctions.findIds({
         filterBy: {
           subCategoryId: subCategory.id,
         },
         limit,
       });
 
-      return productLoader.findById.loadMany(rows.map((r) => r.id));
+      if (!totalCount) {
+        return null;
+      }
+
+      return productFunctions.findById(rows.map((r) => r.id));
+
+      // return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
   },
 
@@ -35,7 +47,8 @@ export default {
     subCategories: async (_1: any, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await subCategoryFunctions.findIds({ limit, offset });
 
-      const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
+      const edges = await subCategoryFunctions.findById(messages.map(({ id }) => id));
+      // const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TSubCategoryInstance> = {
@@ -49,7 +62,10 @@ export default {
 
     subCategory: async (_1: any, { inputSubCategory: { subCategoryId, subCategorySlug } }) => {
       if (!!subCategoryId) {
-        return subCategoryLoader.findById.load(subCategoryId);
+        const [res] = await subCategoryFunctions.findById([subCategoryId]);
+
+        return res;
+        // return subCategoryLoader.findById.load(subCategoryId);
       }
 
       const subCategory = await subCategoryFunctions.findIds({
@@ -62,7 +78,10 @@ export default {
         return null;
       }
 
-      return subCategoryLoader.findById.load(subCategory.rows[0].id);
+      const [response] = await subCategoryFunctions.findById([subCategory.rows[0].id]);
+
+      return response;
+      // return subCategoryLoader.findById.load(subCategory.rows[0].id);
     },
   },
 

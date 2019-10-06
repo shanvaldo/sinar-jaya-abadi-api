@@ -4,8 +4,8 @@ import { IConnection } from '../../interfaces/IConnection';
 import { TProductInstance } from '../../models/product';
 import pageBuilder from '../../utils/pageBuilder';
 import verifyToken from '../auth/auth.functions/verify.auth';
-import { categoryLoader } from '../category/category.functions';
-import { subCategoryLoader } from '../subCategory/subCategory.functions';
+import categoryFunctions, { categoryLoader } from '../category/category.functions';
+import subCategoryFunctions, { subCategoryLoader } from '../subCategory/subCategory.functions';
 
 export default {
   Product: {
@@ -23,14 +23,23 @@ export default {
     subCategoryId : (product: TProductInstance) => product.subCategoryId,
     updatedAt     : (product: TProductInstance) => product.updatedAt,
 
-    category      : (product: TProductInstance) => categoryLoader.findById.load(product.categoryId),
+    category      : async (product: TProductInstance) => {
+      const [response] = await categoryFunctions.findById([product.categoryId]);
+
+      return response;
+      // return categoryLoader.findById.load(product.categoryId);
+    },
     productImages : (product: TProductInstance) => product.productImages,
-    subCategory   : (product: TProductInstance) => {
+    subCategory   : async (product: TProductInstance) => {
       if (!product.subCategoryId) {
         return null;
       }
 
-      return subCategoryLoader.findById.load(product.subCategoryId);
+      const [response] = await subCategoryFunctions.findById([product.subCategoryId]);
+
+      return response;
+
+      // return subCategoryLoader.findById.load(product.subCategoryId);
     },
   },
 
@@ -38,7 +47,8 @@ export default {
     products: async (_1: any, { inputProducts: { first: limit = 10, offset = 0, sort = {} } = {} }) => {
       const { rows: messages, totalCount } = await productFunctions.findIds({ limit, offset, sortBy: sort });
 
-      const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
+      const edges = await productFunctions.findById(messages.map(({ id }) => id));
+      // const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TProductInstance> = {
@@ -52,7 +62,10 @@ export default {
 
     product: async (_1: any, { inputProduct: { productId, productSlug } }) => {
       if (!!productId) {
-        return productLoader.findById.load(productId);
+        const [res] = await productFunctions.findById([productId]);
+
+        return res;
+        // return productLoader.findById.load(productId);
       }
 
       const product = await productFunctions.findIds({
@@ -65,13 +78,18 @@ export default {
         return null;
       }
 
-      return productLoader.findById.load(product.rows[0].id);
+      const [response] = await productFunctions.findById([product.rows[0].id]);
+
+      return response;
+      // return productLoader.findById.load(product.rows[0].id);
     },
 
     searchProducts: async (_1: any, { inputSearchProduct: { name = '' } }) => {
       const productIds = await productFunctions.search(name);
 
-      return productLoader.findById.loadMany(productIds);
+      return productFunctions.findById(productIds);
+
+      // return productLoader.findById.loadMany(productIds);
     },
 
     recommendationProducts: (_1: any, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => {

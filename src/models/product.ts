@@ -34,7 +34,7 @@ export default (sequelize: Sequelize.Sequelize) => {
     where : { deletedAt: { [sequelize.Op.ne]: null } },
   }];
 
-  const product = sequelize.define<TProductInstance, IProductAttributes>('Product', attributes, { indexes });
+  const product = sequelize.define<TProductInstance, IProductAttributes>('Product', attributes, { indexes, paranoid: true });
 
   product.associate = (models) => {
     product.belongsTo(models.Category, {

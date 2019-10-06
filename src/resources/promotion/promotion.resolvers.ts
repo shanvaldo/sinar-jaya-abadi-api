@@ -1,5 +1,5 @@
 import verifyToken from '../auth/auth.functions/verify.auth';
-import { productLoader } from '../product/product.functions';
+import productFunctions, { productLoader } from '../product/product.functions';
 import promotionFunction from './promotion.functions';
 
 export default {
@@ -7,7 +7,9 @@ export default {
     promotions: async () => {
       const productIds = await promotionFunction.findProductIds();
 
-      return productLoader.findById.loadMany(productIds);
+      return productFunctions.findById(productIds);
+
+      // return productLoader.findById.loadMany(productIds);
     },
   },
 
