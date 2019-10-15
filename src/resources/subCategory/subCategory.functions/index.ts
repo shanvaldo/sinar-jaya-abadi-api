@@ -1,5 +1,3 @@
-import DataLoader from 'dataloader';
-
 import createSubCategory from './create.subCategory';
 import deleteSubCategory from './delete.subCategory';
 import findAllSubCategory from './findAll.subCategory';
@@ -8,9 +6,11 @@ import findBySlugSubCategory from './findBySlug.subCategory';
 import findIdsSubCategory from './findIds.subCategory';
 import updateSubCategory from './update.subCategory';
 
+import dataLoaderConfig from '../../../config/dataLoader.config';
+
 export const subCategoryLoader = Object.freeze({
-  findById  : new DataLoader(findByIdSubCategory),
-  findBySlug: new DataLoader(findBySlugSubCategory),
+  findById  : dataLoaderConfig('subCategory', findByIdSubCategory),
+  findBySlug: dataLoaderConfig('subCategory', findBySlugSubCategory),
 });
 
 export default Object.freeze({

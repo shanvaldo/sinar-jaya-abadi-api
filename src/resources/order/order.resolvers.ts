@@ -20,11 +20,11 @@ export default {
     updatedAt   : (orderDetail: TOrderDetailInstance) => orderDetail.updatedAt,
 
     product     : async (orderDetail: TOrderDetailInstance) => {
-      const [response] = await productFunctions.findById([orderDetail.productId]);
+      // const [response] = await productFunctions.findById([orderDetail.productId]);
 
-      return response;
+      // return response;
 
-      // return productLoader.findById.load(orderDetail.productId);
+      return productLoader.findById.load(orderDetail.productId);
     },
   },
 
@@ -36,11 +36,11 @@ export default {
     updatedAt   : (order: TOrderInstance) => order.updatedAt,
 
     customer    : async (order: TOrderInstance) => {
-      const [response] = await customerFunctions.findById([order.customerId]);
+      // const [response] = await customerFunctions.findById([order.customerId]);
 
-      return response;
+      // return response;
 
-      // return customerLoader.findById.load(order.customerId);
+      return customerLoader.findById.load(order.customerId);
     },
 
     orderDetails: async (order: TOrderInstance, { limit }) => {
@@ -50,9 +50,11 @@ export default {
         return [];
       }
 
-      const response = await Promise.all(orderDetailIds.map((o) => orderDetailFunctions.findById([o])));
+      return orderDetailLoader.findById.loadMany(orderDetailIds);
 
-      return response.flatMap((r) => r);
+      // const response = await Promise.all(orderDetailIds.map((o) => orderDetailFunctions.findById([o])));
+
+      // return response.flatMap((r) => r);
     },
   },
 
@@ -60,8 +62,8 @@ export default {
     orders: async (_1: any, { inputOrders: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await orderFunctions.findIds({ limit, offset });
 
-      const edges = await Promise.all(messages.map(({ id }) => orderFunctions.findById([id])));
-      // const edges = await orderLoader.findById.loadMany(messages.map(({ id }) => id));
+      // const edges = await Promise.all(messages.map(({ id }) => orderFunctions.findById([id])));
+      const edges = await orderLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TOrderInstance> = {
@@ -74,11 +76,11 @@ export default {
     },
 
     order: async (_1: any, { inputOrder: { orderId } }) => {
-      const [response] = await orderFunctions.findById([orderId]);
+      // const [response] = await orderFunctions.findById([orderId]);
 
-      return response;
+      // return response;
 
-      // return orderLoader.findById.load(orderId);
+      return orderLoader.findById.load(orderId);
     },
   },
 

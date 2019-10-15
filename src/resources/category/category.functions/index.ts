@@ -6,11 +6,11 @@ import findBySlugCategory from './findBySlug.category';
 import findIdsCategory from './findIds.category';
 import updateCategory from './update.category';
 
-import dataLoader from '../../../utils/dataLoader';
+import dataLoaderConfig from '../../../config/dataLoader.config';
 
 export const categoryLoader = Object.freeze({
-  findById  : dataLoader(findByIdCategory),
-  findBySlug: dataLoader(findBySlugCategory),
+  findById  : dataLoaderConfig('category', findByIdCategory),
+  findBySlug: dataLoaderConfig('category', findBySlugCategory),
 });
 
 export default Object.freeze({

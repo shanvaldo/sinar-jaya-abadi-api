@@ -63,7 +63,7 @@ export default {
 
       const deletedCustomer = await customerFunctions.delete(customerId);
 
-      customerLoader.findById.clear(customerId);
+      await customerLoader.findById.clear(customerId);
 
       return deletedCustomer;
     },

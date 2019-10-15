@@ -28,9 +28,9 @@ export default {
         limit,
       });
 
-      return productFunctions.findById(rows.map((r) => r.id));
+      // return productFunctions.findById(rows.map((r) => r.id));
 
-      // return productLoader.findById.loadMany(rows.map((r) => r.id));
+      return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
 
     subCategories : async (category: TCategoryInstance, { limit }) => {
@@ -39,9 +39,9 @@ export default {
         limit,
       });
 
-      return subCategoryFunctions.findById(rows.map((r) => r.id));
+      // return subCategoryFunctions.findById(rows.map((r) => r.id));
 
-      // return subCategoryLoader.findById.loadMany(rows.map((r) => r.id));
+      return subCategoryLoader.findById.loadMany(rows.map((r) => r.id));
     },
   },
 
@@ -55,11 +55,7 @@ export default {
     categories: async (_1: any, { first: limit = 10, offset = 0 }) => {
       const { rows: messages, totalCount } = await categoryFunction.findIds({ limit, offset });
 
-      // const uniqueMessage = [...new Set(messages.map(({ id }) => id))];
-
-      // const edges = await categoryLoader.findById.loadMany(uniqueMessage);
-      // const edges = await categoryFunction.findById(messages.map(({ id }) => id));
-      const edges = await Promise.all(messages.map(({ id }) => categoryFunction.findById([id])));
+      const edges = await categoryLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TCategoryInstance> = {
@@ -73,10 +69,10 @@ export default {
 
     category: async (_1: any, { inputCategory: { categorySlug, categoryId } }) => {
       if (!!categoryId) {
-        // return categoryLoader.findById.load(categoryId);
-        const [res] = await categoryFunction.findById([categoryId]);
+        return categoryLoader.findById.load(categoryId);
+        // const [res] = await categoryFunction.findById([categoryId]);
 
-        return res;
+        // return res;
       }
 
       const category = await categoryFunction.findIds({
@@ -89,8 +85,8 @@ export default {
         return null;
       }
 
-      // const response = await categoryLoader.findById.load(category.rows[0].id);
-      const [response] = await categoryFunction.findById([category.rows[0].id]);
+      const response = await categoryLoader.findById.load(category.rows[0].id);
+      // const [response] = await categoryFunction.findById([category.rows[0].id]);
 
       return response;
     },
@@ -115,7 +111,7 @@ export default {
         label,
       });
 
-      categoryLoader.findById.clear(categoryId);
+      await categoryLoader.findById.clear(categoryId);
 
       return updatedCategory;
     },
@@ -125,7 +121,7 @@ export default {
 
       const deletedCategory = await categoryFunction.delete(categoryId);
 
-      categoryLoader.findById.clear(categoryId);
+      await categoryLoader.findById.clear(categoryId);
 
       return deletedCategory;
     },

@@ -68,7 +68,7 @@ export default {
     updateNews: async (_1, { inputUpdateNews: { newsId, title, content, coverImage } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      newsLoader.findById.clear(newsId);
+      await newsLoader.findById.clear(newsId);
 
       return newsFunctions.update(newsId, {
         content,
@@ -80,7 +80,7 @@ export default {
     deleteNews: async (_1, { inputDeleteNews: { newsId } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      newsLoader.findById.clear(newsId);
+      await newsLoader.findById.clear(newsId);
 
       return newsFunctions.delete(newsId);
     },

@@ -19,11 +19,11 @@ export default {
     updatedAt     : (subCategory: TSubCategoryInstance) => subCategory.updatedAt,
 
     category      : async (subCategory: TSubCategoryInstance) => {
-      const [response] = await categoryFunctions.findById([subCategory.categoryId]);
+      // const [response] = await categoryFunctions.findById([subCategory.categoryId]);
 
-      return response;
+      // return response;
 
-      // return categoryLoader.findById.load(subCategory.categoryId);
+      return categoryLoader.findById.load(subCategory.categoryId);
     },
     products      : async (subCategory: TSubCategoryInstance, { limit }) => {
       const { rows, totalCount } = await productFunctions.findIds({
@@ -37,11 +37,11 @@ export default {
         return [];
       }
 
-      const response = await Promise.all(rows.map((r) => productFunctions.findById([r.id])));
+      // const response = await Promise.all(rows.map((r) => productFunctions.findById([r.id])));
 
-      return response.flatMap((r) => r);
+      // return response.flatMap((r) => r);
 
-      // return productLoader.findById.loadMany(rows.map((r) => r.id));
+      return productLoader.findById.loadMany(rows.map((r) => r.id));
     },
   },
 
@@ -49,9 +49,9 @@ export default {
     subCategories: async (_1: any, { inputSubCategories: { first: limit = 10, offset = 0 } = {} }) => {
       const { rows: messages, totalCount } = await subCategoryFunctions.findIds({ limit, offset });
 
-      const edges = await Promise.all(messages.map(({ id }) => subCategoryFunctions.findById([id])));
+      // const edges = await Promise.all(messages.map(({ id }) => subCategoryFunctions.findById([id])));
       // const edges = await subCategoryFunctions.findById(messages.map(({ id }) => id));
-      // const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
+      const edges = await subCategoryLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TSubCategoryInstance> = {
@@ -65,10 +65,10 @@ export default {
 
     subCategory: async (_1: any, { inputSubCategory: { subCategoryId, subCategorySlug } }) => {
       if (!!subCategoryId) {
-        const [res] = await subCategoryFunctions.findById([subCategoryId]);
+        // const [res] = await subCategoryFunctions.findById([subCategoryId]);
 
-        return res;
-        // return subCategoryLoader.findById.load(subCategoryId);
+        // return res;
+        return subCategoryLoader.findById.load(subCategoryId);
       }
 
       const subCategory = await subCategoryFunctions.findIds({
@@ -81,10 +81,10 @@ export default {
         return null;
       }
 
-      const [response] = await subCategoryFunctions.findById([subCategory.rows[0].id]);
+      // const [response] = await subCategoryFunctions.findById([subCategory.rows[0].id]);
 
-      return response;
-      // return subCategoryLoader.findById.load(subCategory.rows[0].id);
+      // return response;
+      return subCategoryLoader.findById.load(subCategory.rows[0].id);
     },
   },
 
@@ -104,7 +104,7 @@ export default {
     updateSubCategory: async (_1: any, { subCategoryId, inputUpdateSubCategory: { label, description } }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      subCategoryLoader.findById.clear(subCategoryId);
+      await subCategoryLoader.findById.clear(subCategoryId);
 
       return subCategoryFunctions.update(subCategoryId, {
         description,
@@ -115,7 +115,7 @@ export default {
     deleteSubCategory: async (_1: any, { subCategoryId }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      subCategoryLoader.findById.clear(subCategoryId);
+      await subCategoryLoader.findById.clear(subCategoryId);
 
       return subCategoryFunctions.delete(subCategoryId);
     },

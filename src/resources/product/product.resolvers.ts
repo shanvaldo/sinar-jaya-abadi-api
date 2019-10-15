@@ -24,10 +24,10 @@ export default {
     updatedAt     : (product: TProductInstance) => product.updatedAt,
 
     category      : async (product: TProductInstance) => {
-      const [response] = await categoryFunctions.findById([product.categoryId]);
+      // const [response] = await categoryFunctions.findById([product.categoryId]);
 
-      return response;
-      // return categoryLoader.findById.load(product.categoryId);
+      // return response;
+      return categoryLoader.findById.load(product.categoryId);
     },
     productImages : (product: TProductInstance) => product.productImages,
     subCategory   : async (product: TProductInstance) => {
@@ -35,11 +35,11 @@ export default {
         return null;
       }
 
-      const [response] = await subCategoryFunctions.findById([product.subCategoryId]);
+      // const [response] = await subCategoryFunctions.findById([product.subCategoryId]);
 
-      return response;
+      // return response;
 
-      // return subCategoryLoader.findById.load(product.subCategoryId);
+      return subCategoryLoader.findById.load(product.subCategoryId);
     },
   },
 
@@ -47,9 +47,9 @@ export default {
     products: async (_1: any, { inputProducts: { first: limit = 10, offset = 0, sort = {} } = {} }) => {
       const { rows: messages, totalCount } = await productFunctions.findIds({ limit, offset, sortBy: sort });
 
-      const edges = await Promise.all(messages.map(({ id }) => productFunctions.findById([id])));
+      // const edges = await Promise.all(messages.map(({ id }) => productFunctions.findById([id])));
       // const edges = await productFunctions.findById(messages.map(({ id }) => id));
-      // const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
+      const edges = await productLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);
 
       const response: IConnection<TProductInstance> = {
@@ -63,10 +63,10 @@ export default {
 
     product: async (_1: any, { inputProduct: { productId, productSlug } }) => {
       if (!!productId) {
-        const [res] = await productFunctions.findById([productId]);
+        // const [res] = await productFunctions.findById([productId]);
 
-        return res;
-        // return productLoader.findById.load(productId);
+        // return res;
+        return productLoader.findById.load(productId);
       }
 
       const product = await productFunctions.findIds({
@@ -79,18 +79,18 @@ export default {
         return null;
       }
 
-      const [response] = await productFunctions.findById([product.rows[0].id]);
+      // const [response] = await productFunctions.findById([product.rows[0].id]);
 
-      return response;
-      // return productLoader.findById.load(product.rows[0].id);
+      // return response;
+      return productLoader.findById.load(product.rows[0].id);
     },
 
     searchProducts: async (_1: any, { inputSearchProduct: { name = '' } }) => {
       const productIds = await productFunctions.search(name);
 
-      return productFunctions.findById(productIds);
+      // return productFunctions.findById(productIds);
 
-      // return productLoader.findById.loadMany(productIds);
+      return productLoader.findById.loadMany(productIds);
     },
 
     recommendationProducts: (_1: any, { inputRecommendationProduct: { productId, categoryId, limit = 10 } }) => {
@@ -117,7 +117,7 @@ export default {
     updateProduct: async (_1: any, { productId, inputUpdateProduct }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      productLoader.findById.clear(productId);
+      await productLoader.findById.clear(productId);
 
       return productFunctions.update(productId, {
         categoryId: inputUpdateProduct.categoryId,
@@ -134,14 +134,12 @@ export default {
     deleteProduct: async (_1: any, { productId }, { accessToken }) => {
       await verifyToken(accessToken);
 
-      productLoader.findById.clear(productId);
+      await productLoader.findById.clear(productId);
 
       return productFunctions.delete(productId);
     },
 
     incrementSeen: (_1: any, { productId }) => {
-      productLoader.findById.clear(productId);
-
       return productFunctions.incrementSeen(productId);
     },
   },

@@ -1,10 +1,10 @@
-import DataLoader from 'dataloader';
-
 import findByIdOrderDetail from './findById.orderDetail';
 import findIdsOrderDetail from './findIds.orderDetail';
 
+import dataLoaderConfig from '../../../config/dataLoader.config';
+
 export const orderDetailLoader = Object.freeze({
-  findById: new DataLoader(findByIdOrderDetail),
+  findById: dataLoaderConfig('orderDetail', findByIdOrderDetail),
 });
 
 export default Object.freeze({

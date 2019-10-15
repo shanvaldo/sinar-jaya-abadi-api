@@ -12,7 +12,7 @@ import promotion from './promotion';
 import subCategory from './subCategory';
 import user from './user';
 
-import config from '../../config/config';
+import config from '../config/database.config';
 
 const env = process.env.NODE_ENV || 'dev';
 const dbConnection = config[env];
@@ -24,7 +24,7 @@ const sequelize = new Sequelize(
   {
     benchmark: false,
     // tslint:disable-next-line: no-console
-    logging: env === 'dev' ? console.log : false,
+    logging: env === 'prod' ? console.log : false,
     timezone: '+07:00',
     ...dbConnection,
   },
