@@ -24,7 +24,7 @@ export default {
       return null;
     },
     parseValue  : (value) => new Date(value),
-    serialize   : (value) => value.getTime(),
+    serialize   : (value) => new Date(value).getTime(),
   }),
 
   PageInfo: {
