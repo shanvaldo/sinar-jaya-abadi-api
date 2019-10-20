@@ -34,8 +34,10 @@ export default {
   },
 
   Query: {
-    news: async (_1, { inputNews: { first: limit = 10, offset = 0, sortBy = {} } = {} }) => {
-      const { rows: messages, totalCount } = await newsFunctions.findIds({ limit, offset, sort: sortBy });
+    news: async (_1, { inputNews: { first: limit = 10, offset = 0, sortByCreatedAt = 'DESC' } = {} }) => {
+      const { rows: messages, totalCount } = await newsFunctions.findIds({ limit, offset, sort: {
+        createdAt: sortByCreatedAt,
+      } });
 
       const news = await newsLoader.findById.loadMany(messages.map(({ id }) => id));
       const pageInfo = pageBuilder(limit, offset, totalCount);

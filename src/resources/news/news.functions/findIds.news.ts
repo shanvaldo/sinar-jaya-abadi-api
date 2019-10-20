@@ -3,7 +3,7 @@ import models from '../../../models';
 import { TNewsInstance } from '../../../models/news';
 
 interface ISortNews {
-  createdAt?: 'ASC' | 'DESC';
+  createdAt?: string;
 }
 
 interface IArgIdNews {
