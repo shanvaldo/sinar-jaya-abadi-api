@@ -20,7 +20,7 @@ type CustomerConnection {
 input InputCreateCustomer {
   email: String
   fullName: String!
-  phone: String
+  phone: String!
   address: String
 }
 

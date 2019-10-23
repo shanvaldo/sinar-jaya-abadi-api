@@ -2,9 +2,9 @@ import models from '../../../models';
 import { TCustomerInstance } from '../../../models/customer';
 
 interface IInputCustomerCategory {
-  email: string;
+  email?: string;
   fullName: string;
-  phone?: string;
+  phone: string;
   address?: string;
 }
 
@@ -18,7 +18,7 @@ export default ({ email, fullName, phone, address }: IInputCustomerCategory): Pr
           fullName,
           phone,
         },
-        where: { email },
+        where: { phone },
       });
 
       return resolve(customer);
