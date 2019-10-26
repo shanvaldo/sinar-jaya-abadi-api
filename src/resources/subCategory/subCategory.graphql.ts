@@ -10,7 +10,7 @@ type SubCategory {
   updatedAt: String
 
   category: Category
-  products(limit: Int): [Product]
+  products(limit: Int, offset: Int, sort: InputProductSort): [Product]
 }
 
 input InputCreateSubCategory {

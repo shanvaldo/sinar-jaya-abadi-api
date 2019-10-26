@@ -9,8 +9,8 @@ interface IResponseDataLoader {
 }
 
 interface IOptionsDataLoader {
-  expire: number;
-  cache: boolean;
+  expire?: number;
+  cache?: boolean;
 }
 
 interface ILoadData extends IOptionsDataLoader {
@@ -23,13 +23,13 @@ const expire = Number(process.env.DEV_REDIS_EXPIRE) || 30;
 const cache = true;
 
 const loadData = (_: ILoadData): Promise<any> => {
-  return new Promise((resolve) => {
-    if (!_.cache) {
-      return resolve(_.fn(_.keys));
-    }
-
+  return new Promise((resolve, reject) => {
     if (!_.keys.length) {
       return resolve([]);
+    }
+
+    if (!_.cache) {
+      return resolve(_.fn(_.keys));
     }
 
     redisClient.mget(_.keys.map((key) => `${_.resource}:${key}`), async (errGet, replies) => {
@@ -38,11 +38,18 @@ const loadData = (_: ILoadData): Promise<any> => {
         console.error(errGet);
       }
 
-      const emptyData = _.keys.filter((key, idx) => !replies[idx] ? key : false);
+      // handle redis if not active
+      const responseFromRedis = !replies ? _.keys.map((k) => null) : replies;
 
-      let data = [];
+      const emptyData = _.keys.filter((key, idx) => !responseFromRedis[idx] ? key : false);
+
+      let data: Array<any> = [];
       if (emptyData.length) {
-        data = await _.fn(emptyData);
+        try {
+          data = await _.fn(emptyData);
+        } catch (error) {
+          return reject(error);
+        }
 
         const exportMulti = redisClient.multi();
 
@@ -59,9 +66,9 @@ const loadData = (_: ILoadData): Promise<any> => {
         });
       }
 
-      const result = replies.map((reply, idx) => {
+      const result = (<Array<string>> responseFromRedis).map((reply, idx) => {
         if (!!reply) {
-          return JSON.parse(replies[idx]);
+          return JSON.parse((<Array<string>> responseFromRedis)[idx]);
         }
 
         return data.find((d) => d.id === _.keys[idx]);
@@ -93,10 +100,14 @@ export default (resource: string, fn: (keys: Array<string>) => Promise<Array<any
       });
     },
     load: (key: string) => {
-      return new Promise(async (resolve) => {
-        const [response] = await loadData({ keys: [key], resource, fn, ...options });
+      return new Promise(async (resolve, reject) => {
+        try {
+          const [response] = await loadData({ keys: [key], resource, fn, ...options });
 
-        return resolve(response);
+          return resolve(response);
+        } catch (error) {
+          return reject(error);
+        }
       });
     },
     loadMany: (keys: Array<string>) => loadData({ keys, resource, fn, ...options }),

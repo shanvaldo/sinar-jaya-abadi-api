@@ -5,8 +5,8 @@ type Customer {
   fullName: String
   phone: String
   address: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   orders(limit: Int): [Order]
 }

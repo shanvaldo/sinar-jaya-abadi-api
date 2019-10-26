@@ -9,7 +9,7 @@ type Category {
   updatedAt: Date
 
   subCategories(limit: Int): [SubCategory]
-  products(limit: Int): [Product]
+  products(limit: Int, offset: Int, sort: InputProductSort): [Product]
 }
 
 type CategoryConnection {

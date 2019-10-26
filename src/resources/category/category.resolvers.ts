@@ -19,13 +19,15 @@ export default {
     slug          : (category: TCategoryInstance) => category.slug,
     updatedAt     : (category: TCategoryInstance) => category.updatedAt,
 
-    products      : async (category: TCategoryInstance, { limit }) => {
+    products      : async (category: TCategoryInstance, { limit, offset, sort: sortBy = {} }) => {
       const { rows } = await productFunctions.findIds({
         filterBy: {
           categoryId: category.id,
           subCategoryId: { [models.Sequelize.Op.eq]: null },
         },
         limit,
+        offset,
+        sortBy,
       });
 
       // return productFunctions.findById(rows.map((r) => r.id));

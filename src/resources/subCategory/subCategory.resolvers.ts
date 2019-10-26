@@ -25,12 +25,14 @@ export default {
 
       return categoryLoader.findById.load(subCategory.categoryId);
     },
-    products      : async (subCategory: TSubCategoryInstance, { limit }) => {
+    products      : async (subCategory: TSubCategoryInstance, { limit, offset, sort: sortBy = {} }) => {
       const { rows, totalCount } = await productFunctions.findIds({
         filterBy: {
           subCategoryId: subCategory.id,
         },
         limit,
+        offset,
+        sortBy,
       });
 
       if (!totalCount) {
