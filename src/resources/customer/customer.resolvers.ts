@@ -26,7 +26,7 @@ export default {
 
   Query: {
     customers: async (_1, { first: limit = 10, offset = 0 }, { accessToken }) => {
-      // await verifyToken(accessToken);
+      await verifyToken(accessToken);
 
       const { rows: messages, totalCount } = await customerFunctions.findIds({ limit, offset });
       const edges = await customerLoader.findById.loadMany(messages.map(({ id }) => id));
