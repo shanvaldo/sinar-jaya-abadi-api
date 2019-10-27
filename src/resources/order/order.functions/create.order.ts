@@ -6,10 +6,11 @@ interface IInputCreateOrder {
   customerId: string;
   code: string;
   totalPrice: number;
+  address?: string;
   orderDetails: Array<IOrderDetailAttributes>;
 }
 
-export default ({ customerId, code, totalPrice, orderDetails }: IInputCreateOrder) => new Promise(async (resolve, reject) => {
+export default ({ customerId, code, totalPrice, orderDetails, address }: IInputCreateOrder) => new Promise(async (resolve, reject) => {
   const transaction = await models.sequelize.transaction();
 
   try {
@@ -18,6 +19,7 @@ export default ({ customerId, code, totalPrice, orderDetails }: IInputCreateOrde
     }
 
     const order = await models.Order.create({
+      address,
       code,
       customerId,
       totalPrice,

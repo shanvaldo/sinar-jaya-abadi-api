@@ -5,21 +5,26 @@ interface IInputCustomerCategory {
   email?: string;
   fullName: string;
   phone: string;
-  address?: string;
 }
 
-export default ({ email, fullName, phone, address }: IInputCustomerCategory): Promise<TCustomerInstance> => {
+export default ({ email, fullName, phone }: IInputCustomerCategory): Promise<TCustomerInstance> => {
   return new Promise(async (resolve, reject) => {
     try {
-      const [customer] = await models.Customer.findOrCreate({
+      const [customer, flag] = await models.Customer.findOrCreate({
         defaults: {
-          address,
           email,
           fullName,
           phone,
         },
         where: { phone },
       });
+
+      if (!flag) {
+        customer.email = email;
+        customer.fullName = fullName;
+
+        await customer.save();
+      }
 
       return resolve(customer);
     } catch (error) {

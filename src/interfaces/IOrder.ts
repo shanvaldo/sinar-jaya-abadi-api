@@ -10,6 +10,7 @@ export interface IOrderAttributes {
 
   code: string;
   totalPrice: number;
+  address?: string;
 
   customer?: TCustomerInstance;
   orderDetails?: Array<TOrderDetailInstance>;

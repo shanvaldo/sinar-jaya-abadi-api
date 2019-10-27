@@ -8,7 +8,6 @@ export interface ICustomerAttributes {
   email: string;
   fullName: string;
   phone?: string;
-  address?: string;
 
   orders?: Array<TOrderInstance>;
 }

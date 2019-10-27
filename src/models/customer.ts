@@ -9,7 +9,6 @@ export interface ICustomerModel extends Sequelize.Model<TCustomerInstance, ICust
 
 export default (sequelize: Sequelize.Sequelize) => {
   const attributes: SequelizeAttributes<ICustomerAttributes> = {
-    address : { type: Sequelize.STRING, allowNull: true },
     email   : { type: Sequelize.STRING, allowNull: false },
     fullName: { type: Sequelize.STRING, allowNull: false },
     phone   : { type: Sequelize.STRING, allowNull: true },

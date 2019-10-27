@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export default {
   dev: {
     database: process.env.DEV_DB_NAME,

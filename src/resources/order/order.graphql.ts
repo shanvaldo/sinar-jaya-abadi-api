@@ -17,6 +17,7 @@ type Order {
   customerId: ID!
   code: String
   totalPrice: Int!
+  address: String
   createdAt: Date
   updatedAt: Date
 
@@ -46,6 +47,7 @@ input InputCreateOrder {
   customerId: ID!
   code: String!
   totalPrice: Int!
+  address: String
   orderDetails: [InputCreateOrderDetail]!
 }
 

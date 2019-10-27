@@ -4,7 +4,6 @@ type Customer {
   email: String
   fullName: String
   phone: String
-  address: String
   createdAt: Date
   updatedAt: Date
 
@@ -21,7 +20,6 @@ input InputCreateCustomer {
   email: String
   fullName: String!
   phone: String!
-  address: String
 }
 
 input InputCustomer {

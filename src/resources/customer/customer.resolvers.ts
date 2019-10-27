@@ -8,7 +8,6 @@ import orderFunctions, { orderLoader } from '../order/order.functions';
 
 export default {
   Customer: {
-    address   : (customer: TCustomerInstance) => customer.address,
     createdAt : (customer: TCustomerInstance) => customer.createdAt,
     email     : (customer: TCustomerInstance) => customer.email,
     fullName  : (customer: TCustomerInstance) => customer.fullName,
@@ -27,7 +26,7 @@ export default {
 
   Query: {
     customers: async (_1, { first: limit = 10, offset = 0 }, { accessToken }) => {
-      await verifyToken(accessToken);
+      // await verifyToken(accessToken);
 
       const { rows: messages, totalCount } = await customerFunctions.findIds({ limit, offset });
       const edges = await customerLoader.findById.loadMany(messages.map(({ id }) => id));
@@ -51,8 +50,7 @@ export default {
   },
 
   Mutation: {
-    createCustomer: (_1, { inputCreateCustomer: { email, fullName, phone, address } }) => customerFunctions.create({
-      address,
+    createCustomer: (_1, { inputCreateCustomer: { email, fullName, phone } }) => customerFunctions.create({
       email,
       fullName,
       phone,

@@ -10,7 +10,7 @@ import productFunctions, { productLoader } from '../product/product.functions';
 
 export default {
   OrderDetail: {
-    createdAt: (orderDetail: TOrderDetailInstance) => orderDetail.createdAt,
+    createdAt   : (orderDetail: TOrderDetailInstance) => orderDetail.createdAt,
     id          : (orderDetail: TOrderDetailInstance) => orderDetail.id,
     note        : (orderDetail: TOrderDetailInstance) => orderDetail.note,
     orderId     : (orderDetail: TOrderDetailInstance) => orderDetail.orderId,
@@ -29,6 +29,7 @@ export default {
   },
 
   Order: {
+    address     : (order: TOrderInstance) => order.address,
     createdAt   : (order: TOrderInstance) => order.createdAt,
     customerId  : (order: TOrderInstance) => order.customerId,
     id          : (order: TOrderInstance) => order.id,
@@ -86,9 +87,9 @@ export default {
 
   Mutation: {
     createOrder: (_1: any, { inputCreateOrder }) => {
-      const { customerId, code, totalPrice, orderDetails } = inputCreateOrder;
+      const { customerId, code, totalPrice, orderDetails, address } = inputCreateOrder;
 
-      return orderFunctions.create({ customerId, code, totalPrice, orderDetails });
+      return orderFunctions.create({ customerId, code, totalPrice, orderDetails, address });
     },
   },
 };

@@ -33,9 +33,9 @@ app
   .use(graphqlPath, (req, res, next) => {
     const xApiKey = req.headers['x-api-key'];
 
-    if ((!xApiKey || xApiKey !== apiKey) && env === 'prod') {
-      return res.status(401).send({ message: RESPONSE.invalidToken });
-    }
+    // if ((!xApiKey || xApiKey !== apiKey) && env === 'prod') {
+    //   return res.status(401).send({ message: RESPONSE.invalidToken });
+    // }
 
     return next();
   });

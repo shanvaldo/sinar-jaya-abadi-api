@@ -9,6 +9,7 @@ export interface IOrderModel extends Sequelize.Model<TOrderInstance, IOrderAttri
 
 export default (sequelize: Sequelize.Sequelize) => {
   const attributes: SequelizeAttributes<IOrderAttributes> = {
+    address   : { type: Sequelize.STRING, allowNull: true },
     code      : { type: Sequelize.STRING, allowNull: false },
     customerId: { type: Sequelize.UUID, allowNull: false },
     totalPrice: { type: Sequelize.INTEGER, allowNull: false },
