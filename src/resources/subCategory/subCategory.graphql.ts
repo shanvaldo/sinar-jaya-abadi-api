@@ -6,8 +6,8 @@ type SubCategory {
   slug: String
   label: String
   description: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 
   category: Category
   products(limit: Int, offset: Int, sort: InputProductSort): [Product]

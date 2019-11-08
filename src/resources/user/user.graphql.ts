@@ -3,8 +3,8 @@ type User {
   id: ID!
   username: String
   password: String
-  createdAt: String
-  updatedAt: String
+  createdAt: Date
+  updatedAt: Date
 }
 
 input NewUser {
