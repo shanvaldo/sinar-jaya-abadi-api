@@ -17,20 +17,34 @@ interface IInputUpdateProduct {
 
 export default (productId: string, value: IInputUpdateProduct) => new Promise(async (resolve, reject) => {
   const transaction = await models.sequelize.transaction();
+  const { categoryId, description, isAvailable, minOrder, name, price, subCategoryId } = value;
 
   try {
-    const product = await models.Product.findOne({
-      include: [
-        {
-          as    : 'productImages',
-          model : models.ProductDetail,
-        },
-      ],
-      where: { id: productId },
-    });
+    const [product, isSubCategoryValid] = await Promise.all([
+      models.Product.findOne({
+        include: [
+          {
+            as    : 'productImages',
+            model : models.ProductDetail,
+          },
+        ],
+        where: { id: productId },
+      }),
+      models.SubCategory.findOne({
+        where: { id: subCategoryId },
+      }),
+    ]);
 
     if (!product) {
       return reject(RESPONSE.error.product.notExists);
+    }
+
+    if (!!subCategoryId && !isSubCategoryValid) {
+      return reject(RESPONSE.error.subCategory.notExists);
+    }
+
+    if (!!subCategoryId && isSubCategoryValid.categoryId !== categoryId) {
+      return reject(RESPONSE.error.subCategory.notAssociate);
     }
 
     await models.ProductDetail.destroy({
@@ -39,13 +53,13 @@ export default (productId: string, value: IInputUpdateProduct) => new Promise(as
     });
 
     const updatedProduct = await product.update({
-      categoryId    : value.categoryId || product.categoryId,
-      description   : value.description || product.description,
-      isAvailable   : value.isAvailable || product.isAvailable,
-      minOrder      : value.minOrder || product.minOrder,
-      name          : value.name || product.name,
-      price         : value.price || product.price,
-      subCategoryId : value.subCategoryId || product.subCategoryId,
+      categoryId,
+      description,
+      isAvailable,
+      minOrder,
+      name,
+      price,
+      subCategoryId,
     }, { returning: true, transaction });
 
     const productImages = await Promise.all(value.productImages.map((productImage) => {
