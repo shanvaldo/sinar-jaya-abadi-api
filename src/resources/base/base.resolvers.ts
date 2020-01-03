@@ -35,11 +35,11 @@ export default {
   },
 
   Query: {
-    appName: () => `VIS-Cleaning-Api ${process.env.NODE_ENV}`,
+    appName: () => `Sinar-Jaya-Abadi-Api ${process.env.NODE_ENV}`,
   },
 
   Mutation: {
-    setAppName: () => 'VIS-Cleaning-Api',
+    setAppName: () => 'Sinar-Jaya-Abadi-Api',
 
     clearCache: () => {
       categoryLoader.findById.clearAll();

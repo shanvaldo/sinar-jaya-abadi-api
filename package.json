@@ -1,8 +1,8 @@
 {
-  "name": "viscleaning-api",
+  "name": "sinar-jaya-abadi-api",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/viscleaning/viscleaning-api.git",
+  "repository": "https://github.com/shanvaldo/sinar-jaya-abadi-api.git",
   "author": "ardhiansyahputra <ardhimetanaputra@gmail.com>",
   "license": "MIT",
   "scripts": {
