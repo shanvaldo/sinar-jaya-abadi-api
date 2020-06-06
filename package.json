@@ -15,7 +15,7 @@
     "start:dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/app.ts"
   },
   "dependencies": {
-    "apollo-server-express": "2.8.1",
+    "apollo-server-express": "2.14.2",
     "cors": "2.8.5",
     "crypto": "1.0.1",
     "dotenv": "8.0.0",
